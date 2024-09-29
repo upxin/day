@@ -48,8 +48,8 @@ function weightedRandomSelection(weights, count) {
 
 const predictedNumbers = []
 for (const _ of new Array(10)) {
-  const item =  weightedRandomSelection(weights, 20);
-  predictedNumbers.push(item)
+  const item =  weightedRandomSelection(weights, 10);
+  predictedNumbers.push(item.join(','))
 }
 // 输出结果
 console.log(predictedNumbers);
