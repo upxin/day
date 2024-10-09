@@ -16,11 +16,6 @@ const sortedNumbers = Object.keys(frequency).sort((a, b) => frequency[a] - frequ
 // 提取最近两期的前六个数字
 const recentNumbers = arr.slice(0, 2).map(item => item.split(',').slice(0, 6));
 
-// 检查生成的数字是否与最近两期的数字有重复
-const hasOverlapWithRecent = (numbers) => {
-  return recentNumbers.some(recent => recent.some(num => numbers.includes(num)));
-};
-
 const generatePredictions = (sortedMain, sortedSpecial) => {
   const predictions = [];
   while (predictions.length < 10) {
@@ -30,10 +25,8 @@ const generatePredictions = (sortedMain, sortedSpecial) => {
       mainNumbers.add(sortedMain[randomIndex]);
     }
     const mainNumbersArray = [...mainNumbers].sort((a, b) => a - b);
-    if (!hasOverlapWithRecent(mainNumbersArray)) {
-      const specialIndex = Math.floor(Math.random() * sortedSpecial.length);
-      predictions.push(mainNumbersArray.join(',') + ' | ' + sortedSpecial[specialIndex]);
-    }
+    const specialIndex = Math.floor(Math.random() * sortedSpecial.length);
+    predictions.push(mainNumbersArray.join(',') + ' | ' + sortedSpecial[specialIndex]);
   }
   return predictions;
 };
