@@ -16,23 +16,8 @@ function combination(n, k) {
   return result;
 }
 // 示例调用
-const n = 5;
+const n = 9;
 const k = 2;
 
-function cal(n, k) {
-  debugger
-  const len = n - k
-  let rets = []
-  let sum = 1
-  for (let i = 0; i < len; i++) {
-    let item = n-i
-    rets.push(item)
-  }
-  for(let i = 0; i < rets?.length; i++) {
-    sum*= rets[i]
-  }
-  return sum
-}
 
-console.log(cal(n, k));
 console.log(combination(n, k));
