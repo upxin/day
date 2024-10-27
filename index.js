@@ -16,7 +16,7 @@ function combination(n, k) {
   return result;
 }
 // 示例调用
-const n = 9;
+const n = 10;
 const k = 2;
 
 
