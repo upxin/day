@@ -1,16 +1,23 @@
-async function test () {
-  console.log(1)
-  const res1= await test1()
-  console.log(res1)
-  const res2= await test2()
-  console.log(res2)
-  console.log(2)
-}
-function test1 () {
-  return Promise.resolve(3)
+function getRed() {
+  const numbers = [];
+  while (numbers.length < 6) {
+    const randomNumber = Math.floor(Math.random() * 33) + 1;
+    if (!numbers.includes(randomNumber)) {
+      numbers.push(randomNumber);
+    }
+  }
+  return numbers.sort((a, b) => a - b).join('-');
 }
 
-function test2 () {
-  return Promise.resolve(4)
-} 
-test()
+function getBlue() {
+  const randomNumber = Math.floor(Math.random() * 16) + 1;
+  return '-'+ randomNumber
+}
+
+
+const obj = []
+for (let index = 0; index < 100; index++) {
+  const element = getRed() + getBlue()
+  obj.push(element)
+}
+console.log(obj)

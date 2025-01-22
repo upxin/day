@@ -21,3 +21,4 @@ const k = 2;
 
 
 console.log(combination(n, k));
+// 1 3 4 8 9 17 18 19 20 23 24 25 26 27 31 
