@@ -9,8 +9,8 @@
 <template>
   <div id="app">
     <!-- <router-view v-if="isRouterAlive" /> -->
-     <div>{{ list[1].item }}</div>
-     <div>{{ obj.a }}</div>
+     <div>{{ _p[1].item }}</div>
+     <div>{{ _p2.a }}</div>
      <el-button @click="changeP">change</el-button>
   </div>
 </template>
