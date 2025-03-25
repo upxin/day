@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>单式票号码出现次数统计</title>
+  <title>单式票号码出现次数统计（兼容复式）</title>
   <style>
     body { font-family: Arial, sans-serif; line-height: 1.6; }
     h1, h2 { text-align: center; }
@@ -10,16 +10,138 @@
     th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
     th { background-color: #f4f4f4; }
     #total { text-align: center; font-weight: bold; }
+    .goal { color: red; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h1>单式票号码出现次数统计</h1>
+  <h1>单式票号码出现次数统计（兼容复式）</h1>
   <div id="front-table"></div>
   <div id="back-table"></div>
   <div id="total"></div>
+  <script src="./2025031.js"></script>
+  <script>
+    // 生成所有单式票（兼容单式与复式票）
+    function generateSingleTickets(input) {
+      const allTickets = [];
+      input.trim().split('\n').forEach(line => {
+        const parts = line.split('#').map(part => part.trim());
+        if (!parts[0]) return;
+        // 提取前区和后区号码（去重）
+        const frontNumbers = [...new Set(
+          parts[0].split(/\s+/)
+            .map(Number)
+            .filter(n => n >= 1 && n <= 35)
+        )];
+        const backNumbers = parts[1] ? [...new Set(
+          parts[1].split(/\s+/)
+            .map(Number)
+            .filter(n => n >= 1 && n <= 12)
+        )] : [];
 
-  <script src="./dlt_single.js">
-   
+        // 如果总数恰好7个（通常前区5个、后区2个），视为单式票，直接加入
+        if (frontNumbers.length + backNumbers.length === 7) {
+          allTickets.push({
+            front: frontNumbers.sort((a, b) => a - b),
+            back: backNumbers.sort((a, b) => a - b)
+          });
+        } else if (frontNumbers.length + backNumbers.length > 7) {
+          // 否则视为复式票，展开为所有可能的单式票组合
+          const frontCombinations = getCombinations(frontNumbers, 5);
+          const backCombinations = getCombinations(backNumbers, 2);
+          frontCombinations.forEach(front => {
+            backCombinations.forEach(back => {
+              allTickets.push({
+                front: front.sort((a, b) => a - b),
+                back: back.sort((a, b) => a - b)
+              });
+            });
+          });
+        }
+      });
+      return allTickets;
+    }
+
+    // 组合生成函数：从数组 arr 中选取 k 个数的所有组合
+    function getCombinations(arr, k) {
+      const result = [];
+      function backtrack(start, path) {
+        if (path.length === k) {
+          result.push([...path]);
+          return;
+        }
+        for (let i = start; i < arr.length; i++) {
+          path.push(arr[i]);
+          backtrack(i + 1, path);
+          path.pop();
+        }
+      }
+      backtrack(0, []);
+      return result;
+    }
+
+    // 统计所有单式票中号码出现次数
+    function countSingleTickets(tickets) {
+      const stats = {
+        front: Array(36).fill(0), // 前区 1-35
+        back: Array(13).fill(0)   // 后区 1-12
+      };
+      tickets.forEach(ticket => {
+        ticket.front.forEach(num => stats.front[num]++);
+        ticket.back.forEach(num => stats.back[num]++);
+      });
+      return stats;
+    }
+
+    // 根据统计数据生成数组，每个对象包含 "号码"、"出现次数" 和 "出现比例"
+    function generateStatsArray(data, range, totalTickets) {
+      const result = [];
+      for (let i = 1; i <= range; i++) {
+        if (data[i] > 0) {
+          let percentage = ((data[i] / totalTickets) * 100).toFixed(1) + "%";
+          result.push({
+            "号码": i.toString().padStart(2, "0"),
+            "出现次数": data[i],
+            "出现比例": percentage
+          });
+        }
+      }
+      // 按出现次数降序排列
+      return result.sort((a, b) => b["出现次数"] - a["出现次数"]);
+    }
+
+    // 生成 HTML 表格，如果号码在 winningNumbers 中则标红显示
+    function createHTMLTable(dataArray, title, winningNumbers) {
+      let html = `<h2>${title} 出现次数及比例（单式统计）</h2>`;
+      html += `<table><thead><tr><th>号码</th><th>出现次数</th><th>出现比例</th></tr></thead><tbody>`;
+      dataArray.forEach(item => {
+        const num = parseInt(item["号码"]);
+        const isGoal = winningNumbers.includes(num);
+        html += `<tr>
+          <td${isGoal ? ' class="goal"' : ''}>${item["号码"]}</td>
+          <td${isGoal ? ' class="goal"' : ''}>${item["出现次数"]}</td>
+          <td${isGoal ? ' class="goal"' : ''}>${item["出现比例"]}</td>
+        </tr>`;
+      });
+      html += `</tbody></table>`;
+      return html;
+    }
+
+    // 执行转换与统计
+    const singleTickets = generateSingleTickets(input);
+    const stats = countSingleTickets(singleTickets);
+    const totalTickets = singleTickets.length;
+    const frontStatsArray = generateStatsArray(stats.front, 35, totalTickets);
+    const backStatsArray  = generateStatsArray(stats.back, 12, totalTickets);
+
+    // 模拟中奖号码（示例）：前区前5个号码，后区后2个号码
+    const goal = [14, 18, 20, 25, 35, 1, 7];
+    const goalFront = goal.slice(0, 5);
+    const goalBack  = goal.slice(5);
+
+    // 将结果插入页面中
+    document.getElementById("front-table").innerHTML = createHTMLTable(frontStatsArray, "前区", goalFront);
+    document.getElementById("back-table").innerHTML  = createHTMLTable(backStatsArray, "后区", goalBack);
+    document.getElementById("total").innerHTML = `<p>共生成 ${totalTickets} 注单式票</p>`;
   </script>
 </body>
 </html>
