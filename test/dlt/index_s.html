@@ -1,147 +1,210 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>单式票号码出现次数统计（兼容复式）</title>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; }
-    h1, h2 { text-align: center; }
-    table { border-collapse: collapse; margin: 20px auto; width: 80%; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f4f4f4; }
-    #total { text-align: center; font-weight: bold; }
-    .goal { color: red; font-weight: bold; }
-  </style>
-</head>
-<body>
-  <h1>单式票号码出现次数统计（兼容复式）</h1>
-  <div id="front-table"></div>
-  <div id="back-table"></div>
-  <div id="total"></div>
-  <script src="./2025031.js"></script>
-  <script>
-    // 生成所有单式票（兼容单式与复式票）
-    function generateSingleTickets(input) {
-      const allTickets = [];
-      input.trim().split('\n').forEach(line => {
-        const parts = line.split('#').map(part => part.trim());
-        if (!parts[0]) return;
-        // 提取前区和后区号码（去重）
-        const frontNumbers = [...new Set(
-          parts[0].split(/\s+/)
-            .map(Number)
-            .filter(n => n >= 1 && n <= 35)
-        )];
-        const backNumbers = parts[1] ? [...new Set(
-          parts[1].split(/\s+/)
-            .map(Number)
-            .filter(n => n >= 1 && n <= 12)
-        )] : [];
-
-        // 如果总数恰好7个（通常前区5个、后区2个），视为单式票，直接加入
-        if (frontNumbers.length + backNumbers.length === 7) {
-          allTickets.push({
-            front: frontNumbers.sort((a, b) => a - b),
-            back: backNumbers.sort((a, b) => a - b)
-          });
-        } else if (frontNumbers.length + backNumbers.length > 7) {
-          // 否则视为复式票，展开为所有可能的单式票组合
-          const frontCombinations = getCombinations(frontNumbers, 5);
-          const backCombinations = getCombinations(backNumbers, 2);
-          frontCombinations.forEach(front => {
-            backCombinations.forEach(back => {
-              allTickets.push({
-                front: front.sort((a, b) => a - b),
-                back: back.sort((a, b) => a - b)
-              });
-            });
-          });
-        }
-      });
-      return allTickets;
-    }
-
-    // 组合生成函数：从数组 arr 中选取 k 个数的所有组合
-    function getCombinations(arr, k) {
-      const result = [];
-      function backtrack(start, path) {
-        if (path.length === k) {
-          result.push([...path]);
-          return;
-        }
-        for (let i = start; i < arr.length; i++) {
-          path.push(arr[i]);
-          backtrack(i + 1, path);
-          path.pop();
-        }
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>大乐透数据处理</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
       }
-      backtrack(0, []);
-      return result;
-    }
 
-    // 统计所有单式票中号码出现次数
-    function countSingleTickets(tickets) {
-      const stats = {
-        front: Array(36).fill(0), // 前区 1-35
-        back: Array(13).fill(0)   // 后区 1-12
-      };
-      tickets.forEach(ticket => {
-        ticket.front.forEach(num => stats.front[num]++);
-        ticket.back.forEach(num => stats.back[num]++);
-      });
-      return stats;
-    }
-
-    // 根据统计数据生成数组，每个对象包含 "号码"、"出现次数" 和 "出现比例"
-    function generateStatsArray(data, range, totalTickets) {
-      const result = [];
-      for (let i = 1; i <= range; i++) {
-        if (data[i] > 0) {
-          let percentage = ((data[i] / totalTickets) * 100).toFixed(1) + "%";
-          result.push({
-            "号码": i.toString().padStart(2, "0"),
-            "出现次数": data[i],
-            "出现比例": percentage
-          });
-        }
+      table,
+      th,
+      td {
+        border: 1px solid #000;
       }
-      // 按出现次数降序排列
-      return result.sort((a, b) => b["出现次数"] - a["出现次数"]);
-    }
 
-    // 生成 HTML 表格，如果号码在 winningNumbers 中则标红显示
-    function createHTMLTable(dataArray, title, winningNumbers) {
-      let html = `<h2>${title} 出现次数及比例（单式统计）</h2>`;
-      html += `<table><thead><tr><th>号码</th><th>出现次数</th><th>出现比例</th></tr></thead><tbody>`;
-      dataArray.forEach(item => {
-        const num = parseInt(item["号码"]);
-        const isGoal = winningNumbers.includes(num);
-        html += `<tr>
-          <td${isGoal ? ' class="goal"' : ''}>${item["号码"]}</td>
-          <td${isGoal ? ' class="goal"' : ''}>${item["出现次数"]}</td>
-          <td${isGoal ? ' class="goal"' : ''}>${item["出现比例"]}</td>
-        </tr>`;
+      tr {
+        line-height: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script type="module">
+      // 定义输入数据
+      import { ipt, goal } from './t031.mjs';
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // 生成组合的函数
+        function getCombinations(arr, length) {
+          const result = [];
+          function backtrack(start, current) {
+            if (current.length === length) {
+              result.push([...current]);
+              return;
+            }
+            for (let i = start; i < arr.length; i++) {
+              current.push(arr[i]);
+              backtrack(i + 1, current);
+              current.pop();
+            }
+          }
+          backtrack(0, []);
+          return result;
+        }
+
+        // 处理输入数据，获取所有单式号码
+        function getAllSingleTickets(input) {
+          const lines = input.trim().split("\n");
+          const singleTickets = [];
+          for (let line of lines) {
+            const [front, back] = line.split("#");
+            if (!front || !back) continue;
+
+            const frontNumbers = front
+              .trim()
+              .split(" ")
+              .map(Number)
+              .filter((num) =>!isNaN(num) && num!== 0);
+            const backNumbers = back
+              .trim()
+              .split(" ")
+              .map(Number)
+              .filter((num) =>!isNaN(num) && num!== 0);
+
+            // 前区取5个数字生成组合
+            const frontCombinations = getCombinations(frontNumbers, 5);
+            // 后区取2个数字生成组合
+            const backCombinations = getCombinations(backNumbers, 2);
+            for (let frontComb of frontCombinations) {
+              for (let backComb of backCombinations) {
+                singleTickets.push({ front: frontComb, back: backComb });
+              }
+            }
+          }
+          return singleTickets;
+        }
+
+        // 统计数组中数字出现的次数
+        function countNumbers(numbers) {
+          const count = {};
+          for (let num of numbers) {
+            if (count[num]) {
+              count[num]++;
+            } else {
+              count[num] = 1;
+            }
+          }
+          return count;
+        }
+
+        // 创建前区表格的函数
+        function createFrontTable(count, frontGoal, title, total) {
+          const table = document.createElement("table");
+          table.border = "1";
+          const headerRow = table.insertRow();
+          const serialNumberHeader = headerRow.insertCell();
+          serialNumberHeader.textContent = "序号";
+          const numberHeader = headerRow.insertCell();
+          numberHeader.textContent = "数字";
+          const countHeader = headerRow.insertCell();
+          countHeader.textContent = "出现次数";
+          const percentageHeader = headerRow.insertCell();
+          percentageHeader.textContent = "出现百分比";
+          const tableTitle = document.createElement("h2");
+          tableTitle.textContent = title;
+          document.body.appendChild(tableTitle);
+
+          const sortedKeys = Object.keys(count).sort(
+            (a, b) => count[b] - count[a]
+          );
+
+          let serialNumber = 1;
+          for (let num of sortedKeys) {
+            const row = table.insertRow();
+            const serialNumberCell = row.insertCell();
+            serialNumberCell.textContent = serialNumber++;
+            serialNumberCell.style.color = 'green';
+            const numberCell = row.insertCell();
+            if (frontGoal.includes(Number(num))) {
+              numberCell.innerHTML = `<div style="background: red;color:#fff">${num}</div>`;
+            } else {
+              numberCell.textContent = num;
+            }
+            const countCell = row.insertCell();
+            countCell.textContent = count[num];
+            const percentageCell = row.insertCell();
+            const percentage = ((count[num] / total) * 100).toFixed(2);
+            percentageCell.textContent = `${percentage}%`;
+          }
+          document.body.appendChild(table);
+        }
+
+        // 创建后区表格的函数
+        function createBackTable(count, title, total, backGoal) {
+          const table = document.createElement("table");
+          table.border = "1";
+          const headerRow = table.insertRow();
+          const serialNumberHeader = headerRow.insertCell();
+          serialNumberHeader.textContent = "序号";
+          const numberHeader = headerRow.insertCell();
+          numberHeader.textContent = "数字";
+          const countHeader = headerRow.insertCell();
+          countHeader.textContent = "出现次数";
+          const percentageHeader = headerRow.insertCell();
+          percentageHeader.textContent = "出现百分比";
+          const tableTitle = document.createElement("h2");
+          tableTitle.textContent = title;
+          document.body.appendChild(tableTitle);
+
+          const sortedKeys = Object.keys(count).sort(
+            (a, b) => count[b] - count[a]
+          );
+
+          let serialNumber = 1;
+          for (let num of sortedKeys) {
+            const row = table.insertRow();
+            const serialNumberCell = row.insertCell();
+            serialNumberCell.textContent = serialNumber++;
+            serialNumberCell.style.color = 'green';
+            const numberCell = row.insertCell();
+            if (backGoal.includes(Number(num))) {
+              numberCell.innerHTML = `<div style="background: blue;color:#fff">${num}</div>`;
+            } else {
+              numberCell.textContent = num;
+            }
+            const countCell = row.insertCell();
+            countCell.textContent = count[num];
+            const percentageCell = row.insertCell();
+            const percentage = ((count[num] / total) * 100).toFixed(2);
+            percentageCell.textContent = `${percentage}%`;
+          }
+          document.body.appendChild(table);
+        }
+
+        // 获取所有单式号码
+        const singleTickets = getAllSingleTickets(ipt);
+
+        // 分别存储前区和后区数字
+        const allFrontNumbers = [];
+        const allBackNumbers = [];
+
+        // 遍历单式号码，将前区和后区数字分别存入数组
+        for (let ticket of singleTickets) {
+          allFrontNumbers.push(...ticket.front);
+          allBackNumbers.push(...ticket.back);
+        }
+
+        // 统计前区和后区数字出现的次数
+        const frontCount = countNumbers(allFrontNumbers);
+        const backCount = countNumbers(allBackNumbers);
+
+        // 计算总出现次数
+        const totalFront = allFrontNumbers.length;
+        const totalBack = allBackNumbers.length;
+
+        // 提取前区目标数字（前5项）
+        const frontGoal = goal[0];
+        // 提取后区目标数字（后2项）
+        const backGoal = goal[1];
+
+        // 创建前区和后区统计表格
+        createFrontTable(frontCount, frontGoal, "前区数字统计", totalFront);
+        createBackTable(backCount, "后区数字统计", totalBack, backGoal);
       });
-      html += `</tbody></table>`;
-      return html;
-    }
-
-    // 执行转换与统计
-    const singleTickets = generateSingleTickets(input);
-    const stats = countSingleTickets(singleTickets);
-    const totalTickets = singleTickets.length;
-    const frontStatsArray = generateStatsArray(stats.front, 35, totalTickets);
-    const backStatsArray  = generateStatsArray(stats.back, 12, totalTickets);
-
-    // 模拟中奖号码（示例）：前区前5个号码，后区后2个号码
-    const goal = [14, 18, 20, 25, 35, 1, 7];
-    const goalFront = goal.slice(0, 5);
-    const goalBack  = goal.slice(5);
-
-    // 将结果插入页面中
-    document.getElementById("front-table").innerHTML = createHTMLTable(frontStatsArray, "前区", goalFront);
-    document.getElementById("back-table").innerHTML  = createHTMLTable(backStatsArray, "后区", goalBack);
-    document.getElementById("total").innerHTML = `<p>共生成 ${totalTickets} 注单式票</p>`;
-  </script>
-</body>
-</html>
+    </script>
+  </body>
+</html>    
