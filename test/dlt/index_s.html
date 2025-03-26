@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>大乐透数据处理</title>
     <style>
       table {
         border-collapse: collapse;
@@ -25,9 +24,11 @@
   <body>
     <script type="module">
       // 定义输入数据
-      import { ipt, goal } from './t031.mjs';
+      const importPath = "t032";
+      import { ipt, goal } from "./t032.mjs";
 
       document.addEventListener("DOMContentLoaded", function () {
+        document.title = importPath;
         // 生成组合的函数
         function getCombinations(arr, length) {
           const result = [];
@@ -58,12 +59,12 @@
               .trim()
               .split(" ")
               .map(Number)
-              .filter((num) =>!isNaN(num) && num!== 0);
+              .filter((num) => !isNaN(num) && num !== 0);
             const backNumbers = back
               .trim()
               .split(" ")
               .map(Number)
-              .filter((num) =>!isNaN(num) && num!== 0);
+              .filter((num) => !isNaN(num) && num !== 0);
 
             // 前区取5个数字生成组合
             const frontCombinations = getCombinations(frontNumbers, 5);
@@ -117,7 +118,7 @@
             const row = table.insertRow();
             const serialNumberCell = row.insertCell();
             serialNumberCell.textContent = serialNumber++;
-            serialNumberCell.style.color = 'green';
+            serialNumberCell.style.color = "green";
             const numberCell = row.insertCell();
             if (frontGoal.includes(Number(num))) {
               numberCell.innerHTML = `<div style="background: red;color:#fff">${num}</div>`;
@@ -159,7 +160,7 @@
             const row = table.insertRow();
             const serialNumberCell = row.insertCell();
             serialNumberCell.textContent = serialNumber++;
-            serialNumberCell.style.color = 'green';
+            serialNumberCell.style.color = "green";
             const numberCell = row.insertCell();
             if (backGoal.includes(Number(num))) {
               numberCell.innerHTML = `<div style="background: blue;color:#fff">${num}</div>`;
@@ -207,4 +208,4 @@
       });
     </script>
   </body>
-</html>    
+</html>

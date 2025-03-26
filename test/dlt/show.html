@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Table</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 700px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px 20px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .red {
+        color: red;
+      }
+      .blue {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>前区号码</th>
+          <th>后区号码</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script type="module">
+      import { ipt, goal } from "./t032.mjs";
+      const tableBody = document
+        .getElementById("dataTable")
+        .querySelector("tbody");
+
+      ipt
+        .trim()
+        .split("\n")
+        .forEach((row) => {
+          const [front, back] = row.split("#").map((s) => s.trim());
+          const frontNums = front.split(" ").map(Number);
+          const backNums = back.split(" ").map(Number);
+
+          const tr = document.createElement("tr");
+
+          // 前区处理
+          const frontTd = document.createElement("td");
+          frontNums.forEach((num) => {
+            const span = document.createElement("span");
+            span.textContent = num;
+            if (goal[0].includes(num)) span.classList.add("red");
+            frontTd.appendChild(span);
+            frontTd.appendChild(document.createTextNode(" "));
+          });
+          tr.appendChild(frontTd);
+
+          // 后区处理
+          const backTd = document.createElement("td");
+          backNums.forEach((num) => {
+            const span = document.createElement("span");
+            span.textContent = num;
+            if (goal[1].includes(num)) span.classList.add("blue");
+            backTd.appendChild(span);
+            backTd.appendChild(document.createTextNode(" "));
+          });
+          tr.appendChild(backTd);
+
+          tableBody.appendChild(tr);
+        });
+    </script>
+  </body>
+</html>

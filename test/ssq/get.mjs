@@ -91,6 +91,18 @@ async function exportGroupedTickets() {
       console.error(`写入 ${count}Matches.js 文件时出错:`, error);
     }
   }
+
+  // 导出所有前区5个数据
+  let allFrontDataString = `export const arr = [\n`;
+  for (let ticket of singleTickets) {
+    allFrontDataString += `  "${ticket}",\n`;
+  }
+  allFrontDataString += "];\n";
+  try {
+    await fs.writeFile(`all.mjs`, allFrontDataString);
+  } catch (error) {
+    console.error(`写入 allFrontTickets.js 文件时出错:`, error);
+  }
 }
 
 exportGroupedTickets();

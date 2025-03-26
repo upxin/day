@@ -2,11 +2,9 @@
 // 使用 ESM 导入 fs 模块
 import fs from "fs/promises";
 // 导入 data.mjs 中导出的 ipt 数据
-import { ipt } from "./t031.mjs";
+import { ipt } from "./t032.mjs";
 // const targetNumbers = [14, 18, 20, 25, 35]; // 31qi
-const targetNumbers = [3, 9, 14, 24, 28];  // 30qi
-
-
+const targetNumbers = [12,22,25,27,28];
 
 // 生成组合的函数
 function getCombinations(arr, length) {
@@ -95,13 +93,13 @@ async function exportGroupedTickets() {
     }
   }
   // 导出所有前区5个数据
-  let allFrontDataString = `const allFrontTickets = [\n`;
+  let allFrontDataString = `export const arr = [\n`;
   for (let ticket of singleTickets) {
     allFrontDataString += `  "${ticket}",\n`;
   }
   allFrontDataString += "];\n";
   try {
-    await fs.writeFile(`all.js`, allFrontDataString);
+    await fs.writeFile(`all.mjs`, allFrontDataString);
     console.log(`所有前区5个数据已导出到 allFrontTickets.js 文件中`);
   } catch (error) {
     console.error(`写入 allFrontTickets.js 文件时出错:`, error);
