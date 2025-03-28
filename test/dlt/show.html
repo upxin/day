@@ -3,79 +3,99 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Data Table</title>
+    <title>组合统计表格</title>
     <style>
       table {
         border-collapse: collapse;
-        width: 700px;
+        width: 500px;
+        margin: 0 auto;
       }
+
       th,
       td {
         border: 1px solid #ddd;
-        padding: 8px 20px;
+        padding: 8px;
+        text-align: center;
       }
+
       th {
         background-color: #f2f2f2;
       }
-      .red {
-        color: red;
-      }
-      .blue {
-        color: blue;
+
+      .green {
+        color: green;
       }
     </style>
   </head>
+
   <body>
-    <table id="dataTable">
+    <table id="combinationTable">
       <thead>
         <tr>
-          <th>前区号码</th>
-          <th>后区号码</th>
+          <th class="green">序号</th>
+          <th>组合</th>
+          <th>次数</th>
+          <th>百分比</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
 
     <script type="module">
+      const importPath = "t032";
       import { ipt, goal } from "./t032.mjs";
+      document.title = importPath;
+
+      const lines = ipt.trim().split("\n");
+      const combinations = {};
+      let totalCombinations = 0;
+
+      // 生成两两组合并统计次数
+      lines.forEach((line) => {
+        const parts = line.split("#");
+        if (parts.length === 2) {
+          const numbers = parts[1].trim().split(" ").map(Number);
+          for (let i = 0; i < numbers.length; i++) {
+            for (let j = i + 1; j < numbers.length; j++) {
+              const combination = [numbers[i], numbers[j]]
+                .sort((a, b) => a - b)
+                .join(",");
+              if (!combinations[combination]) {
+                combinations[combination] = 0;
+              }
+              combinations[combination]++;
+              totalCombinations++;
+            }
+          }
+        }
+      });
+
+      // 转换为数组并排序
+      const combinationArray = Object.entries(combinations)
+        .map(([combo, count]) => ({
+          combination: combo,
+          count,
+          percentage: ((count / totalCombinations) * 100).toFixed(4) + "%",
+        }))
+        .sort((a, b) => b.count - a.count);
+
+      // 填充表格
       const tableBody = document
-        .getElementById("dataTable")
+        .getElementById("combinationTable")
         .querySelector("tbody");
+      combinationArray.forEach((item, index) => {
+        const row = tableBody.insertRow();
+        const rankCell = row.insertCell(0);
+        const combinationCell = row.insertCell(1);
+        const countCell = row.insertCell(2);
+        const percentageCell = row.insertCell(3);
 
-      ipt
-        .trim()
-        .split("\n")
-        .forEach((row) => {
-          const [front, back] = row.split("#").map((s) => s.trim());
-          const frontNums = front.split(" ").map(Number);
-          const backNums = back.split(" ").map(Number);
-
-          const tr = document.createElement("tr");
-
-          // 前区处理
-          const frontTd = document.createElement("td");
-          frontNums.forEach((num) => {
-            const span = document.createElement("span");
-            span.textContent = num;
-            if (goal[0].includes(num)) span.classList.add("red");
-            frontTd.appendChild(span);
-            frontTd.appendChild(document.createTextNode(" "));
-          });
-          tr.appendChild(frontTd);
-
-          // 后区处理
-          const backTd = document.createElement("td");
-          backNums.forEach((num) => {
-            const span = document.createElement("span");
-            span.textContent = num;
-            if (goal[1].includes(num)) span.classList.add("blue");
-            backTd.appendChild(span);
-            backTd.appendChild(document.createTextNode(" "));
-          });
-          tr.appendChild(backTd);
-
-          tableBody.appendChild(tr);
-        });
+        rankCell.textContent = index + 1;
+        rankCell.classList.add("green");
+        combinationCell.textContent = item.combination;
+        countCell.textContent = item.count;
+        percentageCell.textContent = item.percentage;
+      });
     </script>
   </body>
 </html>

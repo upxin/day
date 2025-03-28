@@ -1,2 +1,0 @@
-const allSingleTicketsWith5Matches = [
-];
