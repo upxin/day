@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>组合统计</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 20px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .green {
+        color: #4caf50;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section style="display: flex;justify-content: center;">
+      <table id="combinationTable">
+        <thead>
+          <tr>
+            <th>序号</th>
+            <th>后区组合</th>
+            <th>数量</th>
+            <th>比例</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <table id="numberCountTable">
+        <thead>
+          <tr>
+            <th>数字</th>
+            <th>出现次数</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+    <script type="module">
+      import { ipt } from "./t030.mjs";
+      // 生成组合的函数
+      function getCombinations(arr, size) {
+        const result = [];
+        const stack = [];
+
+        function backtrack(start) {
+          if (stack.length === size) {
+            result.push([...stack]);
+            return;
+          }
+
+          for (let i = start; i <= arr.length - (size - stack.length); i++) {
+            stack.push(arr[i]);
+            backtrack(i + 1);
+            stack.pop();
+          }
+        }
+
+        backtrack(0);
+        return result;
+      }
+
+      // 存储所有后区组合
+      const allBackCombinations = [];
+
+      const lines = ipt.trim().split("\n");
+      for (const line of lines) {
+        const [frontPart, backPart] = line.split("#");
+        if (!frontPart || !backPart) continue;
+
+        const frontNumbers = frontPart
+          .trim()
+          .split(" ")
+          .map(Number)
+          .filter((num) => !isNaN(num) && num > 0 && num <= 35);
+        const backNumbers = backPart
+          .trim()
+          .split(" ")
+          .map(Number)
+          .filter((num) => !isNaN(num) && num > 0 && num <= 35);
+
+        const frontCombos = getCombinations(frontNumbers, 5);
+        const backCombos = getCombinations(backNumbers, 2);
+
+        for (const frontCombo of frontCombos) {
+          for (const backCombo of backCombos) {
+            allBackCombinations.push(backCombo);
+          }
+        }
+      }
+
+      // 统计后区组合的数量
+      const countMap = new Map();
+      allBackCombinations.forEach((combo) => {
+        const key = combo.sort((a, b) => a - b).join(",");
+        if (countMap.has(key)) {
+          countMap.set(key, countMap.get(key) + 1);
+        } else {
+          countMap.set(key, 1);
+        }
+      });
+
+      // 计算 1 - 12 数字出现的次数
+      const numCountMap = new Array(12).fill(0);
+      allBackCombinations.forEach((combo) => {
+        combo.forEach((num) => {
+          if (num >= 1 && num <= 12) {
+            numCountMap[num - 1]++;
+          }
+        });
+      });
+
+      // 将 1 - 12 数字及其出现次数转换为数组并排序
+      const numCountArray = [];
+      for (let i = 0; i < 12; i++) {
+        numCountArray.push([i + 1, numCountMap[i]]);
+      }
+      numCountArray.sort((a, b) => b[1] - a[1]);
+
+      // 计算总组合数
+      const totalCount = allBackCombinations.length;
+
+      // 将 Map 转换为数组并按后区组合数量倒序排序
+      const sortedCounts = Array.from(countMap.entries()).sort(
+        (a, b) => b[1] - a[1]
+      );
+
+      // 获取表格的 tbody 元素
+      const tbody = document.querySelector("#combinationTable tbody");
+      const numberCountTbody = document.querySelector(
+        "#numberCountTable tbody"
+      );
+
+      // 填充后区组合表格
+      sortedCounts.forEach(([comboStr, count], index) => {
+        const row = document.createElement("tr");
+        const indexCell = document.createElement("td");
+        const comboCell = document.createElement("td");
+        const countCell = document.createElement("td");
+        const percentageCell = document.createElement("td");
+
+        indexCell.className = "green";
+        indexCell.textContent = index + 1;
+        comboCell.textContent = comboStr;
+        countCell.textContent = count;
+        const percentage = ((count / totalCount) * 100).toFixed(2);
+        percentageCell.textContent = `${percentage}%`;
+
+        row.appendChild(indexCell);
+        row.appendChild(comboCell);
+        row.appendChild(countCell);
+        row.appendChild(percentageCell);
+
+        tbody.appendChild(row);
+      });
+
+      // 填充 1 - 12 数字出现次数表格
+      numCountArray.forEach(([num, count]) => {
+        const row = document.createElement("tr");
+        const numCell = document.createElement("td");
+        const countCell = document.createElement("td");
+
+        numCell.textContent = num;
+        countCell.textContent = count;
+
+        row.appendChild(numCell);
+        row.appendChild(countCell);
+
+        numberCountTbody.appendChild(row);
+      });
+    </script>
+  </body>
+</html>

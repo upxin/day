@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>组合检索all</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      input[type="text"] {
+        padding: 8px;
+        width: 300px;
+        margin-right: 10px;
+      }
+
+      button {
+        padding: 8px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      .result-list {
+        list-style: none;
+        padding: 0;
+        max-height: 800px;
+        overflow-y: auto;
+      }
+
+      .result-item {
+        margin: 4px 0;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+      }
+
+      #resultCount {
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="hh"></div>
+      <div class="input-group">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="输入数字（逗号分隔）"
+        />
+        <button id="searchButton">搜索</button>
+        <span id="resultCount"></span>
+      </div>
+      <ul class="result-list" id="resultList"></ul>
+    </div>
+
+    <script type="module">
+      // 导入组合数据（需要将validCombos单独保存为all32.mjs文件）
+      import { validCombos } from "./all.mjs";
+
+      function searchCombinations() {
+        const input = document.getElementById("searchInput").value.trim();
+        const resultList = document.getElementById("resultList");
+        const resultCount = document.getElementById("resultCount");
+        resultList.innerHTML = "";
+        resultCount.textContent = "";
+
+        if (!input) return;
+
+        // 处理输入的数字（优化输入解析逻辑）
+        const searchNumbers = input
+          .split(/[\s,]+/) // 支持多种分隔符（逗号和空格）
+          .map(num => Number(num))
+          .filter(num => !isNaN(num) && num >= 1 && num <= 35);
+
+        if (searchNumbers.length === 0) {
+          resultList.innerHTML =
+            '<li class="result-item">请输入有效的数字（1-35之间）</li>';
+          resultCount.textContent = "结果条数: 0";
+          return;
+        }
+
+        // 过滤符合条件的组合
+        const filteredCombos = validCombos.filter(combo => {
+          return searchNumbers.every(num => combo.includes(num));
+        });
+
+        if (filteredCombos.length === 0) {
+          resultList.innerHTML =
+            '<li class="result-item">没有找到匹配的组合</li>';
+          resultCount.textContent = "结果条数: 0";
+          return;
+        }
+
+        // 渲染结果
+        filteredCombos.forEach(combo => {
+          const listItem = document.createElement("li");
+          listItem.className = "result-item";
+          listItem.textContent = combo.join(", ");
+          resultList.appendChild(listItem);
+        });
+
+        // 显示结果条数
+        resultCount.textContent = `结果条数: ${filteredCombos.length}`;
+      }
+
+      // 绑定按钮点击事件
+      document
+        .getElementById("searchButton")
+        .addEventListener("click", searchCombinations);
+      document.getElementById("hh").innerText =
+        "共" + validCombos.length + "条";
+      // 绑定输入框的按键事件，监听回车键
+      document
+        .getElementById("searchInput")
+        .addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+            searchCombinations();
+          }
+        });
+    </script>
+  </body>
+</html>
