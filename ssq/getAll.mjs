@@ -32,11 +32,12 @@ const groups = lines.map((line) => {
 // 处理所有组合
 const validCombos = [];
 groups.forEach((group) => {
-  // 跳过不足 6 个元素的组
-  if (group.length < 6) return;
+  // 去重处理
+  const uniqueGroup = [...new Set(group)];
+  if (uniqueGroup.length < 6) return;
 
   // 生成所有 6 元素的组合
-  const combos = generateCombinations(group, 6);
+  const combos = generateCombinations(uniqueGroup, 6);
 
   combos.forEach((combo) => {
     // 计算和值

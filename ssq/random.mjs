@@ -1,7 +1,8 @@
 import { ipt } from "./034.mjs";
 const ig = [];
-const mustBe = [];
-const repeat = 5;
+const mustBe = [1,6,8];
+const repeat = 4;
+const len = 9
 function generateNumbers(ipt) {
   const lines = ipt.split("\n").filter((line) => line.trim() !== "");
   const combinations = lines.map((line) => {
@@ -28,7 +29,7 @@ function generateNumbers(ipt) {
 
   function getRandomNumbers() {
     const numbers = [...mustBe];
-    while (numbers.length < 9) {
+    while (numbers.length < len) {
       const num = Math.floor(Math.random() * 33) + 1;
       if (!numbers.includes(num) && !ig.includes(num)) {
         numbers.push(num);
