@@ -1,4 +1,3 @@
-// 合并后的脚本，可直接运行
 import { ipt } from "./t032.mjs";
 import fs from "fs/promises";
 
@@ -38,12 +37,12 @@ function generateUniqueCombinations() {
       .map(Number)
       .filter((num) => !isNaN(num) && num > 0 && num <= 35);
 
-    if (numbers.length < 3) {
+    if (numbers.length < 2) {
       console.warn(`跳过无效行：数字数量不足（${numbers.length}）`);
       continue;
     }
 
-    const currentCombos = getCombinations(numbers, 3);
+    const currentCombos = getCombinations(numbers, 2);
     for (const combo of currentCombos) {
       combinations.add(combo.sort((a, b) => a - b).join(","));
     }
@@ -52,9 +51,9 @@ function generateUniqueCombinations() {
   return Array.from(combinations).map((str) => str.split(",").map(Number));
 }
 
-// 生成 35 选 3 的所有组合
+// 生成35选2的所有组合
 const allNumbers = Array.from({ length: 35 }, (_, i) => i + 1);
-const allPossibleCombinations = getCombinations(allNumbers, 3).map((combo) =>
+const allPossibleCombinations = getCombinations(allNumbers, 2).map((combo) =>
   combo.sort((a, b) => a - b).join(",")
 );
 
@@ -82,19 +81,19 @@ ${restCombinations.map((combo) => `  [${combo.join(", ")}]`).join(",\n")}
 ];`;
 
 // 写入文件 - 生成的组合
-fs.writeFile("all.mjs", outputContent, "utf8")
+fs.writeFile("all2.mjs", outputContent, "utf8")
   .then(() => {
-    console.log("所有生成的组合已成功导出到 all3.mjs 文件。");
+    console.log("所有生成的组合已成功导出到 all2.mjs 文件。");
   })
   .catch((err) => {
-    console.error("导出 all.mjs 文件时出错:", err);
+    console.error("导出 all2.mjs 文件时出错:", err);
   });
 
 // 写入文件 - 剩余的组合
-fs.writeFile("rest3.mjs", restOutputContent, "utf8")
+fs.writeFile("rest2.mjs", restOutputContent, "utf8")
   .then(() => {
-    console.log("所有剩余的组合已成功导出到 rest3.mjs 文件。");
+    console.log("所有剩余的组合已成功导出到 rest2.mjs 文件。");
   })
   .catch((err) => {
-    console.error("导出 rest3.mjs 文件时出错:", err);
+    console.error("导出 rest2.mjs 文件时出错:", err);
   });

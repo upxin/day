@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>组合检索all</title>
+    <title>组合检索4</title>
     <style>
       * {
         padding: 0;
@@ -72,7 +72,7 @@
     </div>
 
     <script type="module">
-      import { validCombos } from "./all.mjs";
+      import { restValidCombos } from "./rest4.mjs";
 
       function searchCombinations() {
         const input = document.getElementById("searchInput").value.trim();
@@ -86,8 +86,8 @@
         // 处理输入的数字（优化输入解析逻辑）
         const searchNumbers = input
           .split(/[\s,]+/) // 支持多种分隔符（逗号和空格）
-          .map(num => Number(num))
-          .filter(num => !isNaN(num) && num >= 1 && num <= 35);
+          .map((num) => Number(num))
+          .filter((num) => !isNaN(num) && num >= 1 && num <= 35);
 
         if (searchNumbers.length === 0) {
           resultList.innerHTML =
@@ -97,8 +97,8 @@
         }
 
         // 过滤符合条件的组合
-        const filteredCombos = validCombos.filter(combo => {
-          return searchNumbers.every(num => combo.includes(num));
+        const filteredCombos = restValidCombos.filter((combo) => {
+          return searchNumbers.every((num) => combo.includes(num));
         });
 
         if (filteredCombos.length === 0) {
@@ -109,7 +109,7 @@
         }
 
         // 渲染结果
-        filteredCombos.forEach(combo => {
+        filteredCombos.forEach((combo) => {
           const listItem = document.createElement("li");
           listItem.className = "result-item";
           listItem.textContent = combo.join(", ");
@@ -125,7 +125,7 @@
         .getElementById("searchButton")
         .addEventListener("click", searchCombinations);
       document.getElementById("hh").innerText =
-        "共" + validCombos.length + "条";
+        "共" + restValidCombos.length + "条";
       // 绑定输入框的按键事件，监听回车键
       document
         .getElementById("searchInput")

@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { ipt } from "./s032.mjs";
+import { ipt } from "./034.mjs";
 
 function generateCombinations(arr, k) {
   const result = [];
@@ -53,11 +53,11 @@ groups.forEach((group) => {
   });
 });
 
-// 导出结果为 ES 模块
-const outputContent = `export const validCombos = ${JSON.stringify(
-  validCombos,
-  null,
-  2
-)};`;
-const outputPath = path.join(process.cwd(), "all32.mjs");
+// 生成格式化输出
+const formattedCombos = validCombos.map((combo) => `[${combo.join(",")}]`);
+const outputContent = `export const validCombos = [
+  ${formattedCombos.join(",\n  ")}
+];`;
+
+const outputPath = path.join(process.cwd(), "all6.mjs");
 fs.writeFileSync(outputPath, outputContent);
