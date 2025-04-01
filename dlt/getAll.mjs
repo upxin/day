@@ -1,5 +1,5 @@
 // generateCombinations.mjs
-import { ipt } from "./t033.mjs";
+import { ipt } from "./034.mjs";
 
 // 生成组合的函数
 function getCombinations(arr, size) {
@@ -60,10 +60,8 @@ const outputContent = `export const validCombos = [
 ${allCombinations.map((combo) => `  [${combo.join(", ")}]`).join(",\n")}
 ];`;
 
-fs.writeFile("all.mjs", outputContent, "utf8")
+fs.writeFile("all034.mjs", outputContent, "utf8")
   .then(() => {
-    console.log("所有组合已成功导出到 all.mjs 文件。");
   })
   .catch((err) => {
-    console.error("导出文件时出错:", err);
   });

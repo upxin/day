@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>031</title>
+    <title>033</title>
     <style>
       table {
         border-collapse: collapse;
@@ -19,10 +19,17 @@
       th {
         background-color: #f2f2f2;
       }
+
       /* 定义指定列的样式 */
       .highlight {
         background-color: rgb(111, 189, 111);
         color: #fff;
+      }
+
+      /* 定义行悬停样式 */
+      tr:hover {
+        background-color: red;
+        color: white;
       }
     </style>
   </head>
@@ -38,9 +45,9 @@
     </table>
 
     <script type="module">
-      import { ipt, goal } from "./t031.mjs";
+      import { ipt } from "./033.mjs";
       // 定义需要添加样式的数字数组
-      const list = goal[0];
+      const list = [];
       const tableHeader = document.getElementById("table-header");
       const headerRow = document.createElement("tr");
 
