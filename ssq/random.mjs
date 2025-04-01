@@ -4,10 +4,10 @@ const ipt = `1 2 4 8 11 15 16 18 19 21 23 26 27 30 32 33 # 6
 `;
 
 const ig = [];
-const mustBe = [24,26];
-const repeat = 3;
-const len = 8;
-const runTime = new Array(10);
+const mustBe = [1, 6];
+const repeat = 4;
+const len = 9;
+const runTime = new Array(1);
 function generateNumbers(ipt) {
   const lines = ipt.split("\n").filter((line) => line.trim() !== "");
   const combinations = lines.map((line) => {
