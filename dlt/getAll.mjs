@@ -1,5 +1,5 @@
 // generateCombinations.mjs
-import { ipt } from "./034.mjs";
+import { ipt } from "./036.mjs";
 
 // 生成组合的函数
 function getCombinations(arr, size) {
