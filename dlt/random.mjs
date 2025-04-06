@@ -22,8 +22,8 @@ import { ipt } from "./034.mjs";
  *
  */
 
-const ig = [1,2,3];
-const mustBe = [4, 15];
+const ig = [1, 2, 3];
+const mustBe = [17, 18];
 const repeat = 4;
 const len = 8;
 const runTime = new Array(1);
