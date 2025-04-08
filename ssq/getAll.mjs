@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { ipt } from "./035.mjs";
+import { ipt } from "./038.mjs";
 
 function generateCombinations(arr, k) {
   const result = [];
