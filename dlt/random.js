@@ -1,4 +1,4 @@
-import { ipt } from "./037.mjs";
+const { ipt } = require('./037.js');
 
 /**
  * 33期参考经验

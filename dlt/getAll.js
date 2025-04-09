@@ -1,5 +1,6 @@
-// generateCombinations.mjs
-import { ipt } from "./037.mjs";
+const fs = require('fs');
+// 假设 037.js 文件导出了一个名为 ipt 的变量
+const { ipt } = require('./038.js');
 
 // 生成组合的函数
 function getCombinations(arr, size) {
@@ -32,10 +33,10 @@ function generateCombinations() {
     if (!frontPart) continue;
 
     const numbers = frontPart
-      .trim()
-      .split(" ")
-      .map(Number)
-      .filter((num) => !isNaN(num) && num > 0 && num <= 35);
+     .trim()
+     .split(" ")
+     .map(Number)
+     .filter((num) =>!isNaN(num) && num > 0 && num <= 35);
 
     if (numbers.length < 5) {
       console.warn(`跳过无效行：数字数量不足（${numbers.length}）`);
@@ -49,19 +50,24 @@ function generateCombinations() {
   return allCombos;
 }
 
-export const allCombinations = generateCombinations();
+const allCombinations = generateCombinations();
 console.log(allCombinations.length);
 
-// exportToFile.mjs
-import fs from "fs/promises";
-
 // 构建输出内容
-const outputContent = `export const validCombos = [
+const outputContent = `const validCombos = [
 ${allCombinations.map((combo) => `  [${combo.join(", ")}]`).join(",\n")}
-];`;
+];
+module.exports = {
+  validCombos,
+};`;
 
-fs.writeFile("all.mjs", outputContent, "utf8")
-  .then(() => {
-  })
-  .catch((err) => {
-  });
+fs.writeFile("all.js", outputContent, "utf8", (err) => {
+  if (err) {
+    console.error('写入文件时出错:', err);
+  } else {
+    console.log('文件写入成功');
+  }
+});
+
+// 将 allCombinations 作为模块的导出
+module.exports = allCombinations;

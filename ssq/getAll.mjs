@@ -1,6 +1,7 @@
-import * as fs from "fs";
-import * as path from "path";
-import { ipt } from "./038.mjs";
+const fs = require("fs");
+const path = require("path");
+// 假设 038.js 已经转换为 CommonJS 模块格式
+const { ipt } = require("./038.js");
 
 function generateCombinations(arr, k) {
   const result = [];
@@ -56,9 +57,11 @@ groups.forEach((group) => {
 
 // 生成格式化输出
 const formattedCombos = validCombos.map((combo) => `[${combo.join(",")}]`);
-const outputContent = `export const validCombos = [
+const outputContent = `let validCombos = [
   ${formattedCombos.join(",\n  ")}
-];`;
+];module.exports ={ validCombos};`;
 
-const outputPath = path.join(process.cwd(), "all6.mjs");
+const outputPath = path.join(process.cwd(), "all6.js");
 fs.writeFileSync(outputPath, outputContent);
+
+// 如果你想在当前文件中导出 validCombos 变量供其他文件使用

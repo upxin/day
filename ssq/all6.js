@@ -1,4 +1,4 @@
-export const validCombos = [
+const validCombos = [
   [2,4,9,10,14,32],
   [2,4,9,10,15,30],
   [2,4,9,10,15,32],

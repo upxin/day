@@ -25,9 +25,12 @@
         color: #4caf50; /* 绿色 */
         font-weight: bold;
       }
+      .red {
+        color: red; /* 红色 */
+        font-weight: bold;
+      }
     </style>
   </head>
-
   <body>
     <table id="numberTable">
       <thead>
@@ -40,8 +43,9 @@
       </thead>
       <tbody></tbody>
     </table>
-    <script type="module">
-      import { validCombos } from "./all.mjs";
+    <script src="./all.js"></script>
+    <script>
+      const colorList = [];
       // 统计数字出现的次数
       const countMap = new Map();
       validCombos.forEach((subArray) => {
@@ -78,6 +82,11 @@
         countCell.textContent = count;
         const percentage = ((count / totalCount) * 100).toFixed(2);
         percentageCell.textContent = `${percentage}%`;
+
+        // 检查数字是否在 colorList 中，如果是，添加红色样式
+        if (colorList.includes(number)) {
+          numberCell.className = "red";
+        }
 
         row.appendChild(indexCell);
         row.appendChild(numberCell);

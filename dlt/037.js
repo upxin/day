@@ -26,9 +26,9 @@ const ipt = `
 2 6 9 12 17 18 24 26 31 34 # 3 10
 3 8 9 11 19 20 24 26 34 35 # 1 7
 `;
-const goal = [
-  [12, 22, 25, 27, 28],
-  [1, 2],
-];
+const g1 = [5, 20, 23, 27, 31];
+const g2 = [4, 6];
 
-export { ipt, goal };
+module.exports = {
+  ipt,
+};

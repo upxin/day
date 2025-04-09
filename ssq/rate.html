@@ -25,6 +25,9 @@
         color: #4caf50; /* 绿色 */
         font-weight: bold;
       }
+      .red {
+        color: red;
+      }
     </style>
   </head>
 
@@ -40,8 +43,9 @@
       </thead>
       <tbody></tbody>
     </table>
-    <script type="module">
-      import { validCombos } from "./all6.mjs";
+    <script src="./all6.js"></script>
+    <script>
+      const redBall = [6, 19, 20, 23, 26, 33];
       // 统计数字出现的次数
       const countMap = new Map();
       validCombos.forEach((subArray) => {
@@ -75,6 +79,9 @@
         indexCell.className = "green";
         indexCell.textContent = index + 1;
         numberCell.textContent = number;
+        if (redBall.includes(number)) {
+          numberCell.className = "red";
+        }
         countCell.textContent = count;
         const percentage = ((count / totalCount) * 100).toFixed(2);
         percentageCell.textContent = `${percentage}%`;
