@@ -1,9 +1,11 @@
 // 全局变量定义
-import { ipt } from "./038.mjs";
-let len = 10;
-let repeat = 5;
-const mustBe = [33, 16, 20];
-const ig = [3, 5];
+const { ipt } = require("./039.js");
+// 通常在多组随机后的组合中一定有全部号码,通常以5-6次作为一个回合  然后把数字拿出来去杀号
+// 注意观察那些号一直出现 那些偶然出现 他们很可能组合一起 
+let len = 7;
+let repeat = 4;
+const mustBe = [15, 12, 17];
+const ig = [1, 2, 3, 4, 5, 6];
 
 function generateNumbers() {
   // 解析 ipt 数据

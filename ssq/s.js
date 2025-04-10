@@ -1,7 +1,7 @@
 // 定义需要添加样式的数字数组
 const tableHeader = document.getElementById("table-header");
 const headerRow = document.createElement("tr");
-
+const LR = 9
 // 添加索引列表头
 const indexTh = document.createElement("th");
 indexTh.textContent = "序号";
@@ -83,7 +83,7 @@ lines.forEach((line, rowIndex) => {
     }
 
     // 第六行添加red类（行号从1开始，第六行对应index=5）
-    if (rowIndex + 1 === 6) {
+    if (rowIndex + 1 === LR) {
       row.classList.add("red");
     }
 

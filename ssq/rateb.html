@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>前区039</title>
+    <title>后区039</title>
     <style>
       table {
         border-collapse: collapse;
@@ -43,23 +43,27 @@
       </thead>
       <tbody></tbody>
     </table>
-    <script src="./all039.js"></script>
+    <script src="./039.js"></script>
     <script>
-      const redBall = [8, 10, 12, 15, 17, 23];
-      // 统计数字出现的次数
+      // 统计 # 后面数字出现的次数
       const countMap = new Map();
-      validCombos.forEach((subArray) => {
-        subArray.forEach((num) => {
-          if (countMap.has(num)) {
-            countMap.set(num, countMap.get(num) + 1);
-          } else {
-            countMap.set(num, 1);
-          }
-        });
+      const lines = ipt.trim().split('\n');
+      lines.forEach((line) => {
+        const parts = line.split('#');
+        if (parts.length > 1) {
+          const numbers = parts[1].trim().split(' ').map(Number);
+          numbers.forEach((num) => {
+            if (countMap.has(num)) {
+              countMap.set(num, countMap.get(num) + 1);
+            } else {
+              countMap.set(num, 1);
+            }
+          });
+        }
       });
 
       // 计算总数字数量
-      const totalCount = validCombos.flat().length;
+      const totalCount = lines.length;
 
       // 将 Map 转换为数组并按出现次数倒序排序
       const sortedCounts = Array.from(countMap.entries()).sort(
@@ -79,9 +83,6 @@
         indexCell.className = "green";
         indexCell.textContent = index + 1;
         numberCell.textContent = number;
-        if (redBall.includes(number)) {
-          numberCell.className = "red";
-        }
         countCell.textContent = count;
         const percentage = ((count / totalCount) * 100).toFixed(2);
         percentageCell.textContent = `${percentage}%`;

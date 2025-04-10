@@ -1,4 +1,4 @@
-const validCombos = [
+let validCombos = [
   [2,4,9,10,14,32],
   [2,4,9,10,15,30],
   [2,4,9,10,15,32],
@@ -80315,4 +80315,4 @@ const validCombos = [
   [12,14,20,24,27,30],
   [12,14,20,24,27,32],
   [12,14,23,24,27,30]
-];
+];module.exports ={ validCombos};

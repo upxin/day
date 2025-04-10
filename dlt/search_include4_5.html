@@ -81,11 +81,9 @@
         <ul class="result-list" id="resultList5"></ul>
       </div>
     </div>
-
-    <script type="module">
+    <script src="./all.js"></script>
+    <script>
       // 导入组合数据（需要将validCombos单独保存为all32.mjs文件）
-      import { validCombos } from "./all.mjs";
-
       function searchCombinations() {
         const input = document.getElementById("searchInput").value.trim();
         const resultList4 = document.getElementById("resultList4");
