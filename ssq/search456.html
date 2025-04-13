@@ -3,11 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>搜索039</title>
+    <title>搜索040</title>
     <style>
       * {
         padding: 0;
         margin: 0;
+      }
+      ::-webkit-scrollbar {
+        display: none;
       }
       .container {
         max-width: 1000px;
@@ -40,6 +43,7 @@
       .result-container {
         display: flex;
         justify-content: space-between;
+        margin-top: 20px;
       }
 
       .result-list {
@@ -47,13 +51,14 @@
         padding: 0;
         max-height: 800px;
         overflow-y: auto;
-        width: 32%;
+        width: 200px;
       }
 
       .result-item {
         margin: 4px 0;
         background-color: #f0f0f0;
         border-radius: 4px;
+        padding: 4px;
       }
 
       #resultCount4,
@@ -71,7 +76,7 @@
         <input
           type="text"
           id="searchInput"
-          placeholder="输入数字（逗号分隔，6 个及以上）"
+          placeholder="输入数字（逗号或空格分隔）"
         />
         <button id="searchButton">搜索</button>
         <span id="resultCount4"></span>
@@ -79,14 +84,22 @@
         <span id="resultCount6"></span>
       </div>
       <div class="result-container">
-        <ul class="result-list" id="resultList4"></ul>
-        <ul class="result-list" id="resultList5"></ul>
-        <ul class="result-list" id="resultList6"></ul>
+        <div>
+          <h3>匹配 4 个</h3>
+          <ul class="result-list" id="resultList4"></ul>
+        </div>
+        <div>
+          <h3>匹配 5 个</h3>
+          <ul class="result-list" id="resultList5"></ul>
+        </div>
+        <div>
+          <h3>匹配 6 个</h3>
+          <ul class="result-list" id="resultList6"></ul>
+        </div>
       </div>
     </div>
-    <script src="./all039.js"></script>
+    <script src="./all040.js"></script>
     <script>
-      // 导入组合数据（需要将validCombos单独保存为all32.mjs文件）
       function searchCombinations() {
         const input = document.getElementById("searchInput").value.trim();
         const resultList4 = document.getElementById("resultList4");
@@ -104,22 +117,10 @@
 
         if (!input) return;
 
-        // 处理输入的数字（优化输入解析逻辑）
         const searchNumbers = input
-          .split(/[\s,]+/) // 支持多种分隔符（逗号和空格）
+          .split(/[\s,]+/)
           .map((num) => Number(num))
           .filter((num) => !isNaN(num) && num >= 1 && num <= 35);
-
-        if (searchNumbers.length < 6) {
-          resultList4.innerHTML =
-            '<li class="result-item">请输入至少 6 个有效的数字（1 - 35 之间）</li>';
-          resultList5.innerHTML = "";
-          resultList6.innerHTML = "";
-          resultCount4.textContent = "结果条数: 0";
-          resultCount5.textContent = "结果条数: 0";
-          resultCount6.textContent = "结果条数: 0";
-          return;
-        }
 
         const matched4 = [];
         const matched5 = [];
@@ -139,8 +140,7 @@
         });
 
         if (matched4.length === 0) {
-          resultList4.innerHTML =
-            '<li class="result-item">没有找到匹配 4 个数字的组合</li>';
+          resultList4.innerHTML = "";
         } else {
           matched4.forEach((combo) => {
             const listItem = document.createElement("li");
@@ -151,8 +151,7 @@
         }
 
         if (matched5.length === 0) {
-          resultList5.innerHTML =
-            '<li class="result-item">没有找到匹配 5 个数字的组合</li>';
+          resultList5.innerHTML = "";
         } else {
           matched5.forEach((combo) => {
             const listItem = document.createElement("li");
@@ -163,8 +162,7 @@
         }
 
         if (matched6.length === 0) {
-          resultList6.innerHTML =
-            '<li class="result-item">没有找到匹配 6 个数字的组合</li>';
+          resultList6.innerHTML = "";
         } else {
           matched6.forEach((combo) => {
             const listItem = document.createElement("li");
@@ -174,18 +172,16 @@
           });
         }
 
-        resultCount4.textContent = `结果条数: ${matched4.length}`;
-        resultCount5.textContent = `结果条数: ${matched5.length}`;
-        resultCount6.textContent = `结果条数: ${matched6.length}`;
+        resultCount4.textContent = `4个: ${matched4.length}`;
+        resultCount5.textContent = `5个: ${matched5.length}`;
+        resultCount6.textContent = `6个: ${matched6.length}`;
       }
 
-      // 绑定按钮点击事件
       document
         .getElementById("searchButton")
         .addEventListener("click", searchCombinations);
       document.getElementById("hh").innerText =
         "共" + validCombos.length + "条";
-      // 绑定输入框的按键事件，监听回车键
       document
         .getElementById("searchInput")
         .addEventListener("keydown", function (event) {

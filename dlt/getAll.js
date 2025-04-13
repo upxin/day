@@ -1,6 +1,6 @@
 const fs = require('fs');
 // 假设 037.js 文件导出了一个名为 ipt 的变量
-const { ipt } = require('./038.js');
+const { ipt } = require('./039.js');
 
 // 生成组合的函数
 function getCombinations(arr, size) {

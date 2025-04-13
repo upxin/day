@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>后区039</title>
+    <title>后区040</title>
     <style>
       table {
         border-collapse: collapse;
@@ -32,67 +32,60 @@
   </head>
 
   <body>
-    <table id="numberTable">
-      <thead>
-        <tr>
-          <th>序号</th>
-          <th>数字</th>
-          <th>出现次数</th>
-          <th>百分比</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <script src="./039.js"></script>
+    <script src="./040.js"></script>
     <script>
-      // 统计 # 后面数字出现的次数
-      const countMap = new Map();
-      const lines = ipt.trim().split('\n');
-      lines.forEach((line) => {
-        const parts = line.split('#');
-        if (parts.length > 1) {
-          const numbers = parts[1].trim().split(' ').map(Number);
-          numbers.forEach((num) => {
-            if (countMap.has(num)) {
-              countMap.set(num, countMap.get(num) + 1);
-            } else {
-              countMap.set(num, 1);
+      function countAndPercentage(input) {
+        // 用于存储每个数字出现的次数
+        const countMap = new Map();
+        // 用于存储数字出现的总次数
+        let totalCount = 0;
+
+        // 将输入字符串按行分割
+        const lines = input.split("\n");
+        for (const line of lines) {
+          if (line.trim() === "") continue; // 跳过空行
+          // 找到 # 字符的位置
+          const hashIndex = line.indexOf("#");
+          if (hashIndex !== -1) {
+            // 提取 # 后面的部分
+            const numbersPart = line.slice(hashIndex + 1).trim();
+            // 将提取的部分按空格分割成数字数组
+            const numbers = numbersPart.split(/\s+/).filter((num) => num);
+
+            for (const num of numbers) {
+              // 若数字已在 countMap 中，次数加 1
+              if (countMap.has(num)) {
+                countMap.set(num, countMap.get(num) + 1);
+              } else {
+                // 若数字不在 countMap 中，初始化次数为 1
+                countMap.set(num, 1);
+              }
+              // 总次数加 1
+              totalCount++;
             }
-          });
+          }
         }
-      });
 
-      // 计算总数字数量
-      const totalCount = lines.length;
+        // 用于存储最终结果的数组
+        const result = [];
+        // 遍历 countMap 计算每个数字出现的百分比
+        for (const [num, count] of countMap) {
+          const percentage = ((count / totalCount) * 100).toFixed(2) + "%";
+          result.push({ number: num, count, percentage });
+        }
 
-      // 将 Map 转换为数组并按出现次数倒序排序
-      const sortedCounts = Array.from(countMap.entries()).sort(
-        (a, b) => b[1] - a[1]
-      );
-
-      // 获取表格的 tbody 元素
-      const tbody = document.querySelector("#numberTable tbody");
-
-      // 填充表格
-      sortedCounts.forEach(([number, count], index) => {
-        const row = document.createElement("tr");
-        const indexCell = document.createElement("td");
-        const numberCell = document.createElement("td");
-        const countCell = document.createElement("td");
-        const percentageCell = document.createElement("td");
-        indexCell.className = "green";
-        indexCell.textContent = index + 1;
-        numberCell.textContent = number;
-        countCell.textContent = count;
-        const percentage = ((count / totalCount) * 100).toFixed(2);
-        percentageCell.textContent = `${percentage}%`;
-
-        row.appendChild(indexCell);
-        row.appendChild(numberCell);
-        row.appendChild(countCell);
-        row.appendChild(percentageCell);
-        tbody.appendChild(row);
-      });
+        // 按数字出现次数降序排序
+        result.sort((a, b) => b.count - a.count);
+        return result;
+      }
+      const result = countAndPercentage(ipt);
+      let html = "<ul>";
+      for (let i = 0; i < result.length; i++) {
+        const element = result[i];
+        html += `<li>数字: ${element.number}, 出现次数: ${element.count}, 百分比: ${element.percentage}</li>`;
+      }
+      html += "</ul>";
+      document.body.innerHTML = html;
     </script>
   </body>
 </html>

@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 // 假设 038.js 已经转换为 CommonJS 模块格式
 const { ipt } = require("./039.js");
-
+const p = "all039.js";
 function generateCombinations(arr, k) {
   const result = [];
   const backtrack = (start, current) => {
@@ -61,7 +61,7 @@ const outputContent = `let validCombos = [
   ${formattedCombos.join(",\n  ")}
 ];module.exports ={ validCombos};`;
 
-const outputPath = path.join(process.cwd(), "all039.js");
+const outputPath = path.join(process.cwd(), p);
 fs.writeFileSync(outputPath, outputContent);
 
 // 如果你想在当前文件中导出 validCombos 变量供其他文件使用

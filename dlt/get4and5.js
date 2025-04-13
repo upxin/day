@@ -1,5 +1,5 @@
 import fs from "fs/promises";
-import { validCombos } from "./all.mjs";
+import { validCombos } from "./all.js";
 
 // 过滤符合条件的组合
 function filterCombos(validCombos, arr) {
