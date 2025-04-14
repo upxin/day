@@ -1,5 +1,5 @@
 // 定义需要添加样式的数字数组
-const ROW = 8
+const ROW = 100
 const tableHeader = document.getElementById("table-header");
 const headerRow = document.createElement("tr");
 

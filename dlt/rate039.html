@@ -3,33 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>数字统计</title>
-    <style>
-      table {
-        border-collapse: collapse;
-        width: 30%;
-        margin: 0 auto;
-      }
-
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-      }
-
-      th {
-        background-color: #f2f2f2;
-      }
-      .green {
-        color: #4caf50; /* 绿色 */
-        font-weight: bold;
-      }
-      .red {
-        color: red; /* 红色 */
-        font-weight: bold;
-      }
-    </style>
+    <link rel="stylesheet" href="./assets/r.css">
   </head>
   <body>
     <table id="numberTable">
@@ -43,9 +17,9 @@
       </thead>
       <tbody></tbody>
     </table>
-    <script src="./all.js"></script>
+    <script src="./all039.js"></script>
     <script>
-      const colorList = [];
+      const colorList = [3, 7, 14, 15, 19];
       // 统计数字出现的次数
       const countMap = new Map();
       validCombos.forEach((subArray) => {
@@ -94,6 +68,16 @@
         row.appendChild(percentageCell);
         tbody.appendChild(row);
       });
+    </script>
+    <script>
+      // 获取页面的第一个 script 标签
+      const firstScriptTag = document.querySelector("script");
+
+      if (firstScriptTag) {
+        document.title = firstScriptTag.src.slice(-9)
+      } else {
+        console.log("页面中没有 script 标签。");
+      }
     </script>
   </body>
 </html>

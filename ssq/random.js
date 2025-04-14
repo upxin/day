@@ -2,9 +2,9 @@
 const { ipt } = require("./039.js");
 // 通常在多组随机后的组合中一定有全部号码,通常以5-6次作为一个回合  然后把数字拿出来去杀号
 // 注意观察那些号一直出现 那些偶然出现 他们很可能组合一起
-let len = 8;
+let len = 10;
 let repeat = 5;
-const mustBe = [33,21];
+const mustBe = [8];
 const ig = [];
 
 function generateNumbers() {

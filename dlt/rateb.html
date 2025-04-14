@@ -31,7 +31,7 @@
   </head>
 
   <body>
-    <section style="display: flex;justify-content: center;">
+    <section style="display: flex; justify-content: center">
       <table id="combinationTable">
         <thead>
           <tr>
@@ -53,7 +53,7 @@
         <tbody></tbody>
       </table>
     </section>
-    <script src="./039.js"></script>
+    <script src="./038.js"></script>
     <script>
       // 生成组合的函数
       function getCombinations(arr, size) {
@@ -185,6 +185,16 @@
 
         numberCountTbody.appendChild(row);
       });
+    </script>
+    <script>
+      // 获取页面的第一个 script 标签
+      const firstScriptTag = document.querySelector("script");
+
+      if (firstScriptTag) {
+        document.title = "后区" + firstScriptTag.src.slice(-6);
+      } else {
+        console.log("页面中没有 script 标签。");
+      }
     </script>
   </body>
 </html>

@@ -1,15 +1,14 @@
-const { ipt } = require("./038.js");
+const { ipt } = require("./040.js");
 
 /**
- * 定好两个胆  随机个十几次  选出现最少重复的那组
+ * 可以反着试试放两个认为最不可能开的  选的相对比较多的
  */
 
-const ig = [1, 2, 3, 4, 5, 6];
-const mustBe = [7, 26];
-// const repeat = 4;
-// const len = 9;
-const repeat = 3;
-const len = 7;
+const ig = [];
+const mustBe = [2, 8];
+
+const repeat = 4;
+const len = 8;
 const runTime = new Array(1);
 function generateNumbers(ipt) {
   const lines = ipt.split("\n").filter((line) => line.trim() !== "");

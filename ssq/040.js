@@ -151,7 +151,7 @@ const ipt = `
 2 7 10 15 16 17 18 26 30 #  3
 `;
 
-const g1 = [];
+const g1 = [2, 6, 8, 9, 10, 24];
 const g2 = [];
 
 module.exports = {

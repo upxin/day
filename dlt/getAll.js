@@ -1,6 +1,6 @@
-const fs = require('fs');
-// 假设 037.js 文件导出了一个名为 ipt 的变量
-const { ipt } = require('./039.js');
+const fs = require("fs");
+const { ipt } = require("./040.js");
+const p = "all040.js";
 
 // 生成组合的函数
 function getCombinations(arr, size) {
@@ -33,10 +33,10 @@ function generateCombinations() {
     if (!frontPart) continue;
 
     const numbers = frontPart
-     .trim()
-     .split(" ")
-     .map(Number)
-     .filter((num) =>!isNaN(num) && num > 0 && num <= 35);
+      .trim()
+      .split(" ")
+      .map(Number)
+      .filter((num) => !isNaN(num) && num > 0 && num <= 35);
 
     if (numbers.length < 5) {
       console.warn(`跳过无效行：数字数量不足（${numbers.length}）`);
@@ -61,11 +61,11 @@ module.exports = {
   validCombos,
 };`;
 
-fs.writeFile("all.js", outputContent, "utf8", (err) => {
+fs.writeFile(p, outputContent, "utf8", (err) => {
   if (err) {
-    console.error('写入文件时出错:', err);
+    console.error("写入文件时出错:", err);
   } else {
-    console.log('文件写入成功');
+    console.log("文件写入成功");
   }
 });
 

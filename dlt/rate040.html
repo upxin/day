@@ -3,33 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>前区040</title>
-    <style>
-      table {
-        border-collapse: collapse;
-        width: 30%;
-        margin: 0 auto;
-      }
-
-      th,
-      td {
-        border: 1px solid #ddd;
-        text-align: center;
-      }
-
-      th {
-        background-color: #f2f2f2;
-      }
-      .green {
-        color: #4caf50; /* 绿色 */
-        font-weight: bold;
-      }
-      .red {
-        color: red;
-      }
-    </style>
+    <link rel="stylesheet" href="./assets/r.css">
   </head>
-
   <body>
     <table id="numberTable">
       <thead>
@@ -44,7 +19,7 @@
     </table>
     <script src="./all040.js"></script>
     <script>
-      const redBall = [2, 6, 8, 9, 10, , 24];
+      const colorList = [2, 8, 16, 31, 32];
       // 统计数字出现的次数
       const countMap = new Map();
       validCombos.forEach((subArray) => {
@@ -78,12 +53,14 @@
         indexCell.className = "green";
         indexCell.textContent = index + 1;
         numberCell.textContent = number;
-        if (redBall.includes(number)) {
-          numberCell.className = "red";
-        }
         countCell.textContent = count;
         const percentage = ((count / totalCount) * 100).toFixed(2);
         percentageCell.textContent = `${percentage}%`;
+
+        // 检查数字是否在 colorList 中，如果是，添加红色样式
+        if (colorList.includes(number)) {
+          numberCell.className = "red";
+        }
 
         row.appendChild(indexCell);
         row.appendChild(numberCell);
@@ -91,6 +68,16 @@
         row.appendChild(percentageCell);
         tbody.appendChild(row);
       });
+    </script>
+    <script>
+      // 获取页面的第一个 script 标签
+      const firstScriptTag = document.querySelector("script");
+
+      if (firstScriptTag) {
+        document.title = firstScriptTag.src.slice(-9)
+      } else {
+        console.log("页面中没有 script 标签。");
+      }
     </script>
   </body>
 </html>

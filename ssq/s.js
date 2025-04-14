@@ -1,7 +1,7 @@
 // 定义需要添加样式的数字数组
 const tableHeader = document.getElementById("table-header");
 const headerRow = document.createElement("tr");
-const LR = 9
+const LR = 100
 // 添加索引列表头
 const indexTh = document.createElement("th");
 indexTh.textContent = "序号";

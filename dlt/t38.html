@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>038</title>
   </head>
-  <link rel="stylesheet" href="s.css" />
+  <link rel="stylesheet" href="./assets/s.css" />
   <body>
     <table>
       <thead id="table-header">
@@ -16,6 +15,16 @@
       </tbody>
     </table>
     <script src="./038.js"></script>
-    <script src="./s.js"></script>
+    <script src="./assets/s.js"></script>
+    <script>
+      // 获取页面的第一个 script 标签
+      const firstScriptTag = document.querySelector("script");
+
+      if (firstScriptTag) {
+        document.title = firstScriptTag.src.slice(-6)
+      } else {
+        console.log("页面中没有 script 标签。");
+      }
+    </script>
   </body>
 </html>
