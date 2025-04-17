@@ -1,6 +1,6 @@
 const fs = require("fs");
-const { ipt } = require("./040.js");
-const p = "all040.js";
+const { ipt } = require("./041.js");
+const p = "all041.js";
 
 // 生成组合的函数
 function getCombinations(arr, size) {

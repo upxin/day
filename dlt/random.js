@@ -5,10 +5,10 @@ const { ipt } = require("./040.js");
  */
 
 const ig = [];
-const mustBe = [2, 8];
+const mustBe = [21];
 
-const repeat = 4;
-const len = 8;
+const repeat = 2;
+const len = 5;
 const runTime = new Array(1);
 function generateNumbers(ipt) {
   const lines = ipt.split("\n").filter((line) => line.trim() !== "");

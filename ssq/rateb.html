@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>后区040</title>
     <style>
       table {
         border-collapse: collapse;
@@ -32,7 +31,17 @@
   </head>
 
   <body>
-    <script src="./040.js"></script>
+    <script src="./042.js"></script>
+    <script>
+      // 获取页面的第一个 script 标签
+      const firstScriptTag = document.querySelector("script");
+
+      if (firstScriptTag) {
+        document.title = firstScriptTag.src.slice(-9)
+      } else {
+        console.log("页面中没有 script 标签。");
+      }
+    </script>
     <script>
       function countAndPercentage(input) {
         // 用于存储每个数字出现的次数
