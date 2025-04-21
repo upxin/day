@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数字出现频率统计</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f4f4f9;
+      }
+
+      table {
+        width: 300px;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #007bff;
+        color: white;
+      }
+
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+
+      h2 {
+        margin-top: 30px;
+        color: #333;
+      }
+
+      .red-number {
+        color: red;
+      }
+      .blue-number {
+        color: blue;
+      }
+      .green-index {
+        color: green;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section style="display: flex; justify-content: center">
+      <div id="frontZoneTable"></div>
+      <div id="backZoneTable"></div>
+    </section>
+
+    <script src="./042.js"></script>
+    <script>
+      // 定义需要标红的数字数组
+      const redNumbers = [7, 13, 19, 23, 27, 33];
+      const blueNumbers = [12];
+
+      // 统计数字出现次数
+      function countNumbers(lines, min, max) {
+        const countMap = new Map();
+        for (let i = min; i <= max; i++) {
+          countMap.set(i, 0);
+        }
+
+        lines.forEach((line) => {
+          const numbers = line?.split?.(" ")?.map?.(Number);
+          if (numbers) {
+            numbers.forEach((num) => {
+              if (countMap.has(num)) {
+                countMap.set(num, countMap.get(num) + 1);
+              }
+            });
+          }
+        });
+
+        const result = [];
+        countMap.forEach((count, num) => {
+          result.push({ num, count });
+        });
+
+        result.sort((a, b) => b.count - a.count);
+        return result;
+      }
+
+      // 生成表格
+      function generateTable(data, isFront) {
+        const totalCount = data.reduce((sum, item) => sum + item.count, 0);
+        const table = document.createElement("table");
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+        const indexHeader = document.createElement("th");
+        indexHeader.textContent = "序号";
+        const numHeader = document.createElement("th");
+        numHeader.textContent = "数字";
+        const countHeader = document.createElement("th");
+        countHeader.textContent = "次数";
+        const percentageHeader = document.createElement("th");
+        percentageHeader.textContent = "百分比";
+        headerRow.appendChild(indexHeader);
+        headerRow.appendChild(numHeader);
+        headerRow.appendChild(countHeader);
+        headerRow.appendChild(percentageHeader);
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+        data.forEach((item, index) => {
+          const row = document.createElement("tr");
+          const indexCell = document.createElement("td");
+          indexCell.classList.add("green-index");
+          indexCell.textContent = index + 1;
+          const numCell = document.createElement("td");
+          if (redNumbers.includes(item.num) && isFront) {
+            numCell.classList.add("red-number");
+          }
+
+          if (blueNumbers.includes(item.num) && !isFront) {
+            numCell.classList.add("blue-number");
+          }
+          numCell.textContent = item.num;
+          const countCell = document.createElement("td");
+          countCell.textContent = item.count;
+          const percentageCell = document.createElement("td");
+          const percentage = ((item.count / totalCount) * 100).toFixed(2) + "%";
+          percentageCell.textContent = percentage;
+          row.appendChild(indexCell);
+          row.appendChild(numCell);
+          row.appendChild(countCell);
+          row.appendChild(percentageCell);
+          tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+
+        const titleElement = document.createElement("h2");
+        const container = document.createElement("div");
+        container.appendChild(titleElement);
+        container.appendChild(table);
+        return container;
+      }
+
+      const lines = ipt.trim().split("\n");
+      const frontZoneLines = lines.map((line) => line.split("#")[0]?.trim?.());
+      const backZoneLines = lines.map((line) => line.split("#")[1]?.trim?.());
+
+      const frontZoneData = countNumbers(frontZoneLines, 1, 33);
+      const backZoneData = countNumbers(backZoneLines, 1, 16);
+
+      const frontZoneTable = generateTable(frontZoneData, true);
+      const backZoneTable = generateTable(backZoneData, false);
+
+      document.getElementById("frontZoneTable").appendChild(frontZoneTable);
+      document.getElementById("backZoneTable").appendChild(backZoneTable);
+    </script>
+  </body>
+</html>
