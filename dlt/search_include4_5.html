@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4and5</title>
     <style>
       * {
         padding: 0;
@@ -81,7 +80,7 @@
         <ul class="result-list" id="resultList5"></ul>
       </div>
     </div>
-    <script src="./all040.js"></script>
+    <script src="./all042.js"></script>
     <script>
       // 导入组合数据（需要将validCombos单独保存为all32.mjs文件）
       function searchCombinations() {
@@ -168,6 +167,16 @@
             searchCombinations();
           }
         });
+    </script>
+    <script>
+      // 获取页面的第一个 script 标签
+      const firstScriptTag = document.querySelector("script");
+
+      if (firstScriptTag) {
+        document.title = "搜索" + firstScriptTag.src.slice(-6);
+      } else {
+        console.log("页面中没有 script 标签。");
+      }
     </script>
   </body>
 </html>
