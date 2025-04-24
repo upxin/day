@@ -1,8 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 // 假设 038.js 已经转换为 CommonJS 模块格式
-const { ipt } = require("./043.js");
-const p = "all043.js";
+const { ipt } = require("./045.js");
+const p = "all045.js";
 function generateCombinations(arr, k) {
   const result = [];
   const backtrack = (start, current) => {

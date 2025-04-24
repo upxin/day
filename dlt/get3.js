@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { ipt } = require("./042.js");
+const { ipt } = require("./044.js");
 
 function generateCombinations(arr, k) {
   const result = [];
