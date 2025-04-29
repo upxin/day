@@ -82,7 +82,7 @@ const ipt = `
 2 4 6 7 12 15 30 # 4 6 7
 1 4 7 16 22 25 35 # 5 7 12
 `;
-const g1 = [];
+const g1 = [4, 10, 15, 20, 34];
 const g2 = [];
 
 module.exports = {
