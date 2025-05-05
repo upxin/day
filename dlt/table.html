@@ -21,7 +21,7 @@
       const firstScriptTag = document.querySelector("script");
 
       if (firstScriptTag) {
-        document.title = firstScriptTag.src.slice(-7)
+        document.title = "大乐透" + firstScriptTag.src.slice(-7);
       } else {
         console.log("页面中没有 script 标签。");
       }

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>选2组合出现次数统计</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        margin: 0 auto;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        text-align: center;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+
+  <body>
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th>组合</th>
+          <th>出现次数</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <script src="./047.js"></script>
+    <script>
+      // 获取页面的第一个 script 标签
+      const firstScriptTag = document.querySelector("script");
+
+      if (firstScriptTag) {
+        document.title = "选2" + firstScriptTag.src.slice(-7);
+      } else {
+        console.log("页面中没有 script 标签。");
+      }
+    </script>
+    <script>
+      // 解析数据
+      const lines = ipt.trim().split("\n");
+      const combinationCount = {};
+
+      lines.forEach((line) => {
+        const [numsStr] = line.split("#");
+        const nums = numsStr.trim().split(" ").map(Number);
+
+        // 生成选2组合
+        for (let i = 0; i < nums.length; i++) {
+          for (let j = i + 1; j < nums.length; j++) {
+            const combination = [nums[i], nums[j]]
+              .sort((a, b) => a - b)
+              .join("-");
+            combinationCount[combination] =
+              (combinationCount[combination] || 0) + 1;
+          }
+        }
+      });
+
+      // 将统计结果转换为数组并按出现次数倒序排列
+      const resultArray = Object.entries(combinationCount)
+        .map(([combination, count]) => ({
+          combination: combination,
+          count: count,
+        }))
+        .sort((a, b) => b.count - a.count);
+
+      // 展示结果到表格
+      const tableBody = document.getElementById("tableBody");
+      resultArray.forEach((item) => {
+        const row = document.createElement("tr");
+        const combinationCell = document.createElement("td");
+        combinationCell.textContent = item.combination;
+        const countCell = document.createElement("td");
+        countCell.textContent = item.count;
+        row.appendChild(combinationCell);
+        row.appendChild(countCell);
+        tableBody.appendChild(row);
+      });
+    </script>
+  </body>
+</html>
