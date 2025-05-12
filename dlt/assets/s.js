@@ -13,6 +13,11 @@ for (let i = 1; i <= 35; i++) {
   headerRow.appendChild(th);
 }
 
+// 添加分隔符列
+const hashTh = document.createElement("th");
+hashTh.textContent = "#（个数）"; // 修改表头文本
+headerRow.appendChild(hashTh);
+
 // 生成 1 - 12 的表头
 for (let i = 1; i <= 12; i++) {
   const th = document.createElement("th");
@@ -22,7 +27,7 @@ for (let i = 1; i <= 12; i++) {
 
 tableHeader.appendChild(headerRow);
 
-const lines = ipt.trim().split("\n");
+const lines = sortedIpt.trim().split("\n");
 const tableBody = document.getElementById("table-body");
 
 // 数字转中文大写函数
@@ -48,101 +53,33 @@ function numToChinese(num) {
     "十八",
     "十九",
     "二十",
-    "二十一",
-    "二十二",
-    "二十三",
-    "二十四",
-    "二十五",
-    "二十六",
-    "二十七",
-    "二十八",
-    "二十九",
-    "三十",
-    "三十一",
-    "三十二",
-    "三十三",
-    "三十四",
-    "三十五",
-    "三十六",
-    "三十七",
-    "三十八",
-    "三十九",
-    "四十",
-    "四十一",
-    "四十二",
-    "四十三",
-    "四十四",
-    "四十五",
-    "四十六",
-    "四十七",
-    "四十八",
-    "四十九",
-    "五十",
-    "五十一",
-    "五十二",
-    "五十三",
-    "五十四",
-    "五十五",
-    "五十六",
-    "五十七",
-    "五十八",
-    "五十九",
-    "六十",
-    "六十一",
-    "六十二",
-    "六十三",
-    "六十四",
-    "六十五",
-    "六十六",
-    "六十七",
-    "六十八",
-    "六十九",
-    "七十",
-    "七十一",
-    "七十二",
-    "七十三",
-    "七十四",
-    "七十五",
-    "七十六",
-    "七十七",
-    "七十八",
-    "七十九",
-    "八十",
-    "八十一",
-    "八十二",
-    "八十三",
-    "八十四",
-    "八十五",
-    "八十六",
-    "八十七",
-    "八十八",
-    "八十九",
-    "九十",
-    "九十一",
-    "九十二",
-    "九十三",
-    "九十四",
-    "九十五",
-    "九十六",
-    "九十七",
-    "九十八",
-    "九十九",
-    "一百",
   ];
   return chnNum[num - 1] || "";
 }
 
 lines.forEach((line, rowIndex) => {
   if (line) {
-    const [numbers1To35Str, numbers1To12Str] = line.split("#");
-    const numbers1To35 = numbers1To35Str.trim().split(" ").map(Number);
-    const numbers1To12 = numbers1To12Str.trim().split(" ").map(Number);
+    // 检测 # 的数量
+    const hashCount = (line.match(/#/g) || []).length;
+    const isDoubleHash = hashCount === 2;
+
+    // 处理数据分割
+    const parts = line.split("#").map((part) => part.trim());
+
+    // 确保 parts 数组长度至少为 2
+    while (parts.length < 2) parts.push("");
+
+    const numbers1To35Str = parts[0];
+    const numbers1To12Str = isDoubleHash ? `${parts[1]} ${parts[2]}` : parts[1];
+
+    const numbers1To35 = numbers1To35Str.split(" ").filter(Boolean).map(Number);
+    const numbers1To12 = numbers1To12Str.split(" ").filter(Boolean).map(Number);
 
     const row = document.createElement("tr");
 
     // 添加索引列
     const indexTd = document.createElement("td");
-    indexTd.textContent = numToChinese(rowIndex + 1); // 行号从 1 开始
+    indexTd.textContent = numToChinese(rowIndex + 1);
     row.appendChild(indexTd);
 
     // 处理 1 - 35 范围的数字
@@ -155,6 +92,17 @@ lines.forEach((line, rowIndex) => {
       row.appendChild(cell);
     }
 
+    // 添加分隔符列
+    const hashTd = document.createElement("td");
+    const numbersBeforeHashCount = numbers1To35.length; // 计算#前面数字的个数
+    hashTd.textContent = `#${numbersBeforeHashCount}`; // 拼接个数
+    if (isDoubleHash) {
+      hashTd.textContent = `##${numbersBeforeHashCount}`; // 显示两个#并拼接个数
+      hashTd.classList.add("purple-highlight"); // 仅给这个单元格添加紫色样式
+    }
+    row.appendChild(hashTd);
+
+    // 处理 1 - 12 范围的数字
     for (let i = 1; i <= 12; i++) {
       const cell = document.createElement("td");
       cell.textContent = numbers1To12.includes(i) ? i : "";

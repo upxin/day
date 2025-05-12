@@ -9,6 +9,7 @@ td {
   border: 1px solid #ddd;
   text-align: center;
   line-height: 1;
+  min-width: 20px;
 }
 
 th {
@@ -35,4 +36,9 @@ th {
 tr:hover {
   background-color: green;
   color: white;
+}
+.purple-highlight {
+  color: #fff;
+  background-color: purple;
+  font-weight: bold; /* 可选样式增强 */
 }
