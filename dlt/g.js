@@ -18,6 +18,5 @@ async function copyToClipboard(text) {
 
 // 调用方法并输出结果
 const sortedIpt = sortByNumberCountBeforeHash(ipt);
-console.log(sortedIpt);
 const g1 = [2,4,11,29,30];
 const g2 = [2,8];
