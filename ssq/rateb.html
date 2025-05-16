@@ -13,17 +13,18 @@
       th,
       td {
         border: 1px solid #ddd;
-        padding: 8px;
         text-align: center;
       }
 
       th {
         background-color: #f2f2f2;
       }
+
       .green {
-        color: #4caf50; /* 绿色 */
+        color: #4caf50;
         font-weight: bold;
       }
+
       .red {
         color: red;
       }
@@ -33,67 +34,51 @@
   <body>
     <script src="./data.js"></script>
     <script>
-      // 获取页面的第一个 script 标签
-      const firstScriptTag = document.querySelector("script");
-
-      if (firstScriptTag) {
-        document.title = firstScriptTag.src.slice(-9)
-      } else {
-        console.log("页面中没有 script 标签。");
-      }
-    </script>
-    <script>
       function countAndPercentage(input) {
-        // 用于存储每个数字出现的次数
         const countMap = new Map();
-        // 用于存储数字出现的总次数
         let totalCount = 0;
 
-        // 将输入字符串按行分割
         const lines = input.split("\n");
         for (const line of lines) {
-          if (line.trim() === "") continue; // 跳过空行
-          // 找到 # 字符的位置
-          const hashIndex = line.indexOf("#");
-          if (hashIndex !== -1) {
-            // 提取 # 后面的部分
-            const numbersPart = line.slice(hashIndex + 1).trim();
-            // 将提取的部分按空格分割成数字数组
-            const numbers = numbersPart.split(/\s+/).filter((num) => num);
+          if (line.trim() === "") continue;
+
+          // 同时处理 # 和 ## 作为分隔符
+          const parts = line.split(/#+/).filter((part) => part.trim() !== "");
+          if (parts.length > 1) {
+            const numbersPart = parts[1].trim();
+            const numbers = numbersPart
+              .split(/\s+/)
+              .filter((num) => /^\d+$/.test(num));
 
             for (const num of numbers) {
-              // 若数字已在 countMap 中，次数加 1
               if (countMap.has(num)) {
                 countMap.set(num, countMap.get(num) + 1);
               } else {
-                // 若数字不在 countMap 中，初始化次数为 1
                 countMap.set(num, 1);
               }
-              // 总次数加 1
               totalCount++;
             }
           }
         }
 
-        // 用于存储最终结果的数组
         const result = [];
-        // 遍历 countMap 计算每个数字出现的百分比
         for (const [num, count] of countMap) {
           const percentage = ((count / totalCount) * 100).toFixed(2) + "%";
           result.push({ number: num, count, percentage });
         }
 
-        // 按数字出现次数降序排序
         result.sort((a, b) => b.count - a.count);
         return result;
       }
+
       const result = countAndPercentage(ipt);
-      let html = "<ul>";
+      let html =
+        "<table><tr><th>数字</th><th>出现次数</th><th>百分比</th></tr>";
       for (let i = 0; i < result.length; i++) {
         const element = result[i];
-        html += `<li>数字: ${element.number}, 出现次数: ${element.count}, 百分比: ${element.percentage}</li>`;
+        html += `<tr><td>${element.number}</td><td>${element.count}</td><td>${element.percentage}</td></tr>`;
       }
-      html += "</ul>";
+      html += "</table>";
       document.body.innerHTML = html;
     </script>
   </body>
