@@ -59,5 +59,5 @@ async function copyToClipboard(text) {
 // 调用方法并输出结果
 const sortedIpt = sortByNumberCountBeforeHash(ipt);
 console.log(sortedIpt);
-const g1 = [14, 23, 29, 30, 33];
-const g2 = [6, 12];
+const g1 = [];
+const g2 = [];
