@@ -62,7 +62,3 @@ console.log(sortedIpt);
 const g1 = [3,12,16,21,29];
 const g2 = [1,2];
 // rt
-// [http]
-// 	proxy = http://127.0.0.1:7890
-// [https]
-// 	proxy = https://127.0.0.1:7890
