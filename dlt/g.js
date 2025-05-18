@@ -61,4 +61,3 @@ const sortedIpt = sortByNumberCountBeforeHash(ipt);
 console.log(sortedIpt);
 const g1 = [3,12,16,21,29];
 const g2 = [1,2];
-// rt
