@@ -3,7 +3,11 @@ table {
   width: 100%;
   font-size: 14px;
 }
-
+thead tr th:hover {
+  background-color: green;
+  cursor: pointer;
+  /* 表头hover颜色 */
+}
 th,
 td {
   border: 1px solid #ddd;
@@ -14,7 +18,7 @@ td {
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: aliceblue;
 }
 
 /* 定义指定列的样式 */
@@ -34,7 +38,7 @@ th {
 }
 
 /* 定义行悬停样式 */
-tr:hover {
+tbody tr:hover {
   background-color: green;
   color: white;
 }

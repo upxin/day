@@ -11,16 +11,21 @@ td {
   line-height: 1;
   min-width: 20px;
   padding: 2px 0;
+  cursor: pointer;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: aliceblue;
 }
 
-/* 定义指定列的样式 */
 .highlight {
   background-color: red;
   color: #fff;
+}
+
+tbody tr:hover {
+  background-color: green;
+  color: white;
 }
 
 .red {
@@ -33,13 +38,13 @@ th {
   color: white;
 }
 
-/* 定义行悬停样式 */
-tr:hover {
+thead tr:hover {
   background-color: green;
-  color: white;
+  cursor: pointer;
 }
+
 .purple-highlight {
   color: #fff;
   background-color: purple;
-  font-weight: bold; /* 可选样式增强 */
+  font-weight: bold;
 }

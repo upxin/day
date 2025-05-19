@@ -15,8 +15,12 @@
       </tbody>
     </table>
     <script></script>
+    <script>
+      const g1 = [];
+      const g2 = [];
+    </script>
     <script src="./data.js"></script>
-    <script src="./g.js"></script>
+    <script src="./assets/g.js"></script>
     <script src="./assets/s.js"></script>
     <script src="./assets/drag.js"></script>
     <script>
@@ -24,7 +28,7 @@
       const firstScriptTag = document.querySelector("script");
 
       if (firstScriptTag) {
-        document.title = "大乐透" + firstScriptTag.src.slice(-7);
+        document.title = "dlt" + firstScriptTag.src.slice(-7);
       } else {
         console.log("页面中没有 script 标签。");
       }
