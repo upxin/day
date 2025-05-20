@@ -26,7 +26,7 @@ for (let i = 1; i <= 33; i++) {
 
 // 添加分隔符列
 const hashTh = document.createElement("th");
-hashTh.textContent = "#（个数）";
+hashTh.textContent = "#";
 hashTh.dataset.type = "hash";
 headerRow.appendChild(hashTh);
 
