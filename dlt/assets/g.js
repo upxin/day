@@ -56,5 +56,4 @@ async function copyToClipboard(text) {
   }
 }
 
-// 调用方法并输出结果
-const sortedIpt = sortByNumberCountBeforeHash(ipt);
+ipt = sortByNumberCountBeforeHash(ipt);
