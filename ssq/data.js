@@ -81,6 +81,6 @@ let ipt = `
 6 8 9 14 15 17 18 22 26 29 # 2 4 16
 2 3 8 11 14 23 26 28 31 # 3 9 16
 `;
-// module.exports = {
-//   ipt,
-// };
+module.exports = {
+  ipt,
+};
