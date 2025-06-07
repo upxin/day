@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../common/s.css" />
   </head>
-  <link rel="stylesheet" href="./assets/s.css" />
   <body>
-    <table>
-      <thead id="table-header">
-        <!-- 表头内容将通过 JavaScript 动态生成 -->
-      </thead>
-      <tbody id="table-body">
-        <!-- 表格内容将通过 JavaScript 动态生成 -->
-      </tbody>
-    </table>
-    <script></script>
-    <script>
-      const g1 = [2, 19, 21, 22, 28, 30];
-      const g2 = [1];
-    </script>
-    <script src="./data.js"></script>
-    <script src="./assets/g.js"></script>
-    <script src="./assets/s.js"></script>
-    <script src="./assets/drag.js"></script>
-    <script>
-      // 获取页面的第一个 script 标签
-      const firstScriptTag = document.querySelector("script");
+    <div id="nav-buttons">
+      <div id="prev">上</div>
+      <div id="next" style="margin: 0 10px">下</div>
+      <div id="copy">cv</div>
+    </div>
 
-      if (firstScriptTag) {
-        document.title = "ssq" + firstScriptTag.src.slice(-7);
-      } else {
-        console.log("页面中没有 script 标签。");
-      }
+    <table>
+      <thead id="table-header"></thead>
+      <tbody id="table-body"></tbody>
+    </table>
+
+    <div id="container">
+      <div id="box" class="resizable">
+        <div class="handle tl"></div>
+        <div class="handle tr"></div>
+        <div class="handle bl"></div>
+        <div class="handle br"></div>
+      </div>
+    </div>
+
+    <script>
+      // const g1 = [];
+      // const g2 = [];
     </script>
+    <script>
+      window.current = 63;
+    </script>
+    <script src="./assets/common.js"></script>
+    <script src="../common/drag.js"></script>
   </body>
 </html>

@@ -56,8 +56,8 @@
     <script>
       // 生成组合的函数
       function getCombinations(arr, size) {
-        const result = [];
-        const stack = [];
+        let result = [];
+        let stack = [];
 
         function backtrack(start) {
           if (stack.length === size) {
@@ -77,38 +77,38 @@
       }
 
       // 存储所有后区组合
-      const allBackCombinations = [];
+      let allBackCombinations = [];
 
-      const lines = ipt.trim().split("\n");
-      for (const line of lines) {
-        const [frontPart, backPart] = line.split("#");
+      let lines = ipt.trim().split("\n");
+      for (let line of lines) {
+        let [frontPart, backPart] = line.split("#");
         if (!frontPart || !backPart) continue;
 
-        const frontNumbers = frontPart
+        let frontNumbers = frontPart
           .trim()
           .split(" ")
           .map(Number)
           .filter((num) => !isNaN(num) && num > 0 && num <= 35);
-        const backNumbers = backPart
+        let backNumbers = backPart
           .trim()
           .split(" ")
           .map(Number)
           .filter((num) => !isNaN(num) && num > 0 && num <= 35);
 
-        const frontCombos = getCombinations(frontNumbers, 5);
-        const backCombos = getCombinations(backNumbers, 2);
+        let frontCombos = getCombinations(frontNumbers, 5);
+        let backCombos = getCombinations(backNumbers, 2);
 
-        for (const frontCombo of frontCombos) {
-          for (const backCombo of backCombos) {
+        for (let frontCombo of frontCombos) {
+          for (let backCombo of backCombos) {
             allBackCombinations.push(backCombo);
           }
         }
       }
 
       // 统计后区组合的数量
-      const countMap = new Map();
+      let countMap = new Map();
       allBackCombinations.forEach((combo) => {
-        const key = combo.sort((a, b) => a - b).join(",");
+        let key = combo.sort((a, b) => a - b).join(",");
         if (countMap.has(key)) {
           countMap.set(key, countMap.get(key) + 1);
         } else {
@@ -117,7 +117,7 @@
       });
 
       // 计算 1 - 12 数字出现的次数
-      const numCountMap = new Array(12).fill(0);
+      let numCountMap = new Array(12).fill(0);
       allBackCombinations.forEach((combo) => {
         combo.forEach((num) => {
           if (num >= 1 && num <= 12) {
@@ -127,39 +127,37 @@
       });
 
       // 将 1 - 12 数字及其出现次数转换为数组并排序
-      const numCountArray = [];
+      let numCountArray = [];
       for (let i = 0; i < 12; i++) {
         numCountArray.push([i + 1, numCountMap[i]]);
       }
       numCountArray.sort((a, b) => b[1] - a[1]);
 
       // 计算总组合数
-      const totalCount = allBackCombinations.length;
+      let totalCount = allBackCombinations.length;
 
       // 将 Map 转换为数组并按后区组合数量倒序排序
-      const sortedCounts = Array.from(countMap.entries()).sort(
+      let sortedCounts = Array.from(countMap.entries()).sort(
         (a, b) => b[1] - a[1]
       );
 
       // 获取表格的 tbody 元素
-      const tbody = document.querySelector("#combinationTable tbody");
-      const numberCountTbody = document.querySelector(
-        "#numberCountTable tbody"
-      );
+      let tbody = document.querySelector("#combinationTable tbody");
+      let numberCountTbody = document.querySelector("#numberCountTable tbody");
 
       // 填充后区组合表格
       sortedCounts.forEach(([comboStr, count], index) => {
-        const row = document.createElement("tr");
-        const indexCell = document.createElement("td");
-        const comboCell = document.createElement("td");
-        const countCell = document.createElement("td");
-        const percentageCell = document.createElement("td");
+        let row = document.createElement("tr");
+        let indexCell = document.createElement("td");
+        let comboCell = document.createElement("td");
+        let countCell = document.createElement("td");
+        let percentageCell = document.createElement("td");
 
         indexCell.className = "green";
         indexCell.textContent = index + 1;
         comboCell.textContent = comboStr;
         countCell.textContent = count;
-        const percentage = ((count / totalCount) * 100).toFixed(2);
+        let percentage = ((count / totalCount) * 100).toFixed(2);
         percentageCell.textContent = `${percentage}%`;
 
         row.appendChild(indexCell);
@@ -172,9 +170,9 @@
 
       // 填充 1 - 12 数字出现次数表格
       numCountArray.forEach(([num, count]) => {
-        const row = document.createElement("tr");
-        const numCell = document.createElement("td");
-        const countCell = document.createElement("td");
+        let row = document.createElement("tr");
+        let numCell = document.createElement("td");
+        let countCell = document.createElement("td");
 
         numCell.textContent = num;
         countCell.textContent = count;
@@ -187,7 +185,7 @@
     </script>
     <script>
       // 获取页面的第一个 script 标签
-      const firstScriptTag = document.querySelector("script");
+      let firstScriptTag = document.querySelector("script");
 
       if (firstScriptTag) {
         document.title = "后区" + firstScriptTag.src.slice(-7);

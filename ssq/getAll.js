@@ -1,11 +1,11 @@
-const fs = require("fs");
-const { ipt } = require("./data.js");
-const p = "all.js";
+let fs = require("fs");
+let { ipt } = require("./data.js");
+let p = "all.js";
 
 // 生成组合的函数
 function getCombinations(arr, size) {
-  const result = [];
-  const stack = [];
+  let result = [];
+  let stack = [];
 
   function backtrack(start) {
     if (stack.length === size) {
@@ -26,13 +26,13 @@ function getCombinations(arr, size) {
 
 // 生成组合的函数，不进行去重
 function generateCombinations() {
-  const allCombos = [];
-  const lines = ipt.trim().split("\n");
-  for (const line of lines) {
-    const [frontPart] = line.split("#");
+  let allCombos = [];
+  let lines = ipt.trim().split("\n");
+  for (let line of lines) {
+    let [frontPart] = line.split("#");
     if (!frontPart) continue;
 
-    const numbers = frontPart
+    let numbers = frontPart
       .trim()
       .split(" ")
       .map(Number)
@@ -43,18 +43,18 @@ function generateCombinations() {
       continue;
     }
 
-    const currentCombos = getCombinations(numbers, 6);
+    let currentCombos = getCombinations(numbers, 6);
     allCombos.push(...currentCombos);
   }
 
   return allCombos;
 }
 
-const allCombinations = generateCombinations();
+let allCombinations = generateCombinations();
 console.log(allCombinations.length);
 
 // 构建输出内容
-const outputContent = `const validCombos = [
+let outputContent = `let validCombos = [
 ${allCombinations.map((combo) => `  [${combo.join(", ")}]`).join(",\n")}
 ];
 module.exports = {

@@ -1,0 +1,129 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  text-align: center;
+  line-height: 1;
+  min-width: 20px;
+  padding: 2px 0;
+  cursor: pointer;
+}
+
+th {
+  background-color: aliceblue;
+}
+
+.highlight {
+  color: #fff;
+  background-color: rgba(230, 95, 95, 0.2);
+}
+
+tbody tr:hover {
+  background-color: green;
+  color: white;
+}
+
+.red {
+  background-color: blue;
+  color: #fff;
+}
+
+.line {
+  background-color: green;
+  color: white;
+}
+
+thead tr:hover {
+  background-color: green;
+  cursor: pointer;
+}
+
+.purple-highlight {
+  color: #fff;
+  background-color: purple;
+  font-weight: bold;
+}
+
+#nav-buttons {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 999;
+  display: flex;
+}
+
+#nav-buttons div {
+  background-color: blueviolet;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  text-align: center;
+  color: #fff;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+
+.resizable {
+  position: absolute;
+  border: 2px solid red;
+  width: 150px;
+  height: 150px;
+  top: 100px;
+  left: 100px;
+  box-sizing: border-box;
+  cursor: move;
+  pointer-events: auto;
+  /* 允许 box 响应鼠标事件 */
+  background-color: rgba(255, 255, 255, 0);
+  /* 可选：防止背景遮挡 */
+}
+
+.handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: red;
+  z-index: 10;
+}
+
+.handle.tl {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.handle.tr {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.handle.bl {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.handle.br {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
+}
+
+#container {
+  position: fixed;
+  /* 🔥 改为 fixed 让它悬浮 */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  /* 让点击穿透除 box 外的区域 */
+  z-index: 100;
+}
