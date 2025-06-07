@@ -1,3 +1,12 @@
+body {
+  user-select: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Edge */
+}
+
 table {
   border-collapse: collapse;
   width: 100%;

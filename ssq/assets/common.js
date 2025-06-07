@@ -1,54 +1,64 @@
 const basePath = "./hisData/";
 ipt = window.ipt || "";
+function showError(lineNumber, message) {
+  // 创建对话框元素
+  const dialog = document.createElement("dialog");
+  dialog.innerHTML = `
+    <p>第 ${lineNumber} 行格式错误：${message}</p>
+  `;
 
-function isLinePaddedAndCompact(line) {
-  const hashIndex = line.indexOf("#");
-  const reds = (hashIndex === -1 ? line : line.slice(0, hashIndex)).trim();
-  return !reds.includes(" ") && /^\d+$/.test(reds) && reds.length % 2 === 0;
+  document.body.appendChild(dialog);
+  dialog.showModal(); // 显示模态对话框
+
+  // 关闭后移除元素
+  dialog.addEventListener("close", () => {
+    document.body.removeChild(dialog);
+  });
 }
-
 function normalizeIptFormat(input) {
   const lines = input.trim().split("\n");
 
-  const fixBySplit = (s, max) =>
-    s
-      .split(" ")
-      .filter(Boolean)
-      .map((num) => {
-        const n = parseInt(num, 10);
-        if (!isNaN(n) && n >= 1 && n <= max) {
-          return n.toString().padStart(2, "0");
-        }
-        return num;
-      })
-      .join(" ");
+  const extractPairsStrict = (text, max) => {
+    const raw = text.replace(/\s/g, "");
+    if (raw.length % 2 !== 0) return null;
 
-  const fixByCompact = (s) => s.match(/\d{2}/g)?.join(" ") || "";
+    const pairs = raw.match(/\d{2}/g) || [];
+    const valid = pairs.filter((p) => {
+      const n = parseInt(p, 10);
+      return n >= 1 && n <= max;
+    });
 
-  const normalizedLines = lines.map((line) => {
-    const hashIndex = line.indexOf("#");
-    let left = "",
-      right = "";
+    return valid.length === pairs.length ? valid : null;
+  };
 
-    if (hashIndex === -1) {
-      left = line.trim();
-    } else {
-      left = line.slice(0, hashIndex).trim();
-      right = line.slice(hashIndex + 1).trim();
+  const normalizedLines = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i].trim();
+    if (!rawLine) continue;
+
+    let isDoubleHash = rawLine.includes("##");
+    let [left = "", right = ""] = isDoubleHash
+      ? rawLine.split("##").map((s) => s.trim())
+      : rawLine.split("#").map((s) => s.trim());
+
+    const leftNums = extractPairsStrict(left, 35);
+    const rightNums = extractPairsStrict(right, 12);
+
+    if (leftNums === null || (right && rightNums === null)) {
+      showError(i, rawLine);
+      return rawLine; // 返回原始错误行
     }
 
-    let fixedLeft, fixedRight;
+    const formatted =
+      rightNums.length > 0
+        ? `${leftNums.join(" ")} ${isDoubleHash ? "##" : "#"} ${rightNums.join(
+            " "
+          )}`
+        : `${leftNums.join(" ")}`;
 
-    if (isLinePaddedAndCompact(line)) {
-      fixedLeft = fixByCompact(left);
-      fixedRight = fixByCompact(right);
-    } else {
-      fixedLeft = fixBySplit(left, 33);
-      fixedRight = fixBySplit(right, 16);
-    }
-
-    return hashIndex === -1 ? fixedLeft : `${fixedLeft} # ${fixedRight}`.trim();
-  });
+    normalizedLines.push(formatted);
+  }
 
   return normalizedLines.join("\n");
 }

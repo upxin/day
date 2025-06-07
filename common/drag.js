@@ -1,6 +1,6 @@
 const box = document.getElementById("box");
 box.style.width = window.innerWidth + "px";
-box.style.height = "120px";
+box.style.height = "116px";
 box.style.top = "100px"; // 可根据需要设置初始位置
 box.style.left = "0px";
 
