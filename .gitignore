@@ -1,41 +1,30 @@
-# 忽略所有以 .o 或 .a 结尾的文件
 *.(oa)
 
-# 忽略log文件
 *.log
 
-# 忽略build目录及其所有子文件和子目录
 build/
 
-# 忽略dist目录及其所有子文件和子目录
 dist/
 
-# 忽略node_modules目录及其所有子文件和子目录
 node_modules/
 
-# 忽略.DS_Store文件（Mac系统下的隐藏文件，用于存储文件夹的自定义属性）
 .DS_Store
 
-# 忽略IDE相关的配置文件和目录
 .idea/
 .vscode/
 
-# 忽略本地环境配置文件
 .env.local
 .env.development
 .env.production
 
-# 忽略打包生成的文件
 *.jar
 *.war
 *.zip
 *.tar.gz
 
-# 忽略Python编译生成的文件和目录
 *.pyc
 __pycache__/
 
-# 忽略C++编译生成的文件和目录
 *.exe
 *.obj
 *.lib

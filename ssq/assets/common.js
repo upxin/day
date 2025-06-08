@@ -37,13 +37,13 @@ function normalizeIptFormat(input) {
     const rawLine = lines[i].trim();
     if (!rawLine) continue;
 
-    let isDoubleHash = rawLine.includes("##");
+    let isDoubleHash = rawLine.includes(",,");
     let [left = "", right = ""] = isDoubleHash
-      ? rawLine.split("##").map((s) => s.trim())
-      : rawLine.split("#").map((s) => s.trim());
+      ? rawLine.split(",,").map((s) => s.trim())
+      : rawLine.split(",").map((s) => s.trim());
 
-    const leftNums = extractPairsStrict(left, 35);
-    const rightNums = extractPairsStrict(right, 12);
+    const leftNums = extractPairsStrict(left, 33);
+    const rightNums = extractPairsStrict(right, 16);
 
     if (leftNums === null || (right && rightNums === null)) {
       showError(i, rawLine);
@@ -52,7 +52,7 @@ function normalizeIptFormat(input) {
 
     const formatted =
       rightNums.length > 0
-        ? `${leftNums.join(" ")} ${isDoubleHash ? "##" : "#"} ${rightNums.join(
+        ? `${leftNums.join(" ")} ${isDoubleHash ? ",," : ","} ${rightNums.join(
             " "
           )}`
         : `${leftNums.join(" ")}`;
@@ -68,7 +68,7 @@ function sortByNumberCountBeforeHash(input) {
   const linesWithCount = lines.map((line) => {
     let numbersPart = "",
       commentPart = "";
-    const hashIndex = line.indexOf("#");
+    const hashIndex = line.indexOf(",");
     if (hashIndex !== -1) {
       numbersPart = line.slice(0, hashIndex).trim();
       commentPart = line.slice(hashIndex).trim();
@@ -92,9 +92,9 @@ function parseData() {
 
   lines.forEach((line, rowIndex) => {
     if (line) {
-      const hashCount = (line.match(/#/g) || []).length;
+      const hashCount = (line.match(/,/g) || []).length;
       const isDoubleHash = hashCount === 2;
-      const parts = line.split("#").map((p) => p.trim());
+      const parts = line.split(",").map((p) => p.trim());
       while (parts.length < 2) parts.push("");
 
       const numbers1To35 = parts[0].split(" ").filter(Boolean);
@@ -160,7 +160,7 @@ function renderTable(sortedData = parsedData) {
   }
 
   const hashTh = document.createElement("th");
-  hashTh.textContent = "#";
+  hashTh.textContent = ",";
   hashTh.dataset.type = "hash";
   headerRow.appendChild(hashTh);
 
@@ -206,8 +206,8 @@ function renderTable(sortedData = parsedData) {
 
     const hashTd = document.createElement("td");
     hashTd.textContent = item.isDoubleHash
-      ? `##${item.countBeforeHash}`
-      : `#${item.countBeforeHash}`;
+      ? `,,${item.countBeforeHash}`
+      : `,${item.countBeforeHash}`;
     if (item.isDoubleHash) hashTd.classList.add("purple-highlight");
     row.appendChild(hashTd);
 

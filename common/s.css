@@ -11,6 +11,7 @@ table {
   border-collapse: collapse;
   width: 100%;
   font-size: 14px;
+  margin-bottom: 50px;
 }
 
 th,
@@ -61,7 +62,7 @@ thead tr:hover {
 #nav-buttons {
   position: fixed;
   right: 20px;
-  bottom: 20px;
+  bottom: 10px;
   z-index: 999;
   display: flex;
 }
