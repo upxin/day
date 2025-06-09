@@ -81,7 +81,9 @@ thead tr:hover {
 
 .resizable {
   position: absolute;
-  border: 2px solid red;
+  border: 1px solid red;
+  border-right: transparent;
+  border-left: transparent;
   width: 150px;
   height: 150px;
   top: 100px;

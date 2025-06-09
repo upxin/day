@@ -5,7 +5,7 @@ function showError(lineNumber, message) {
   // 创建对话框元素
   const dialog = document.createElement("dialog");
   dialog.innerHTML = `
-    <p>第 ${lineNumber} 行格式错误：${message}</p>
+    <p>第 ${lineNumber} 错误：${message}</p>
   `;
 
   document.body.appendChild(dialog);
@@ -38,11 +38,15 @@ function normalizeIptFormat(input) {
   for (let i = 0; i < lines.length; i++) {
     const rawLine = lines[i].trim();
     if (!rawLine) continue;
+    if (!rawLine.includes(",")) {
+      showError(i, rawLine + "没有逗号");
+      return;
+    }
 
-    let isDoubleHash = rawLine.includes("##");
+    let isDoubleHash = rawLine.includes(",,");
     let [left = "", right = ""] = isDoubleHash
-      ? rawLine.split("##").map((s) => s.trim())
-      : rawLine.split("#").map((s) => s.trim());
+      ? rawLine.split(",,").map((s) => s.trim())
+      : rawLine.split(",").map((s) => s.trim());
 
     const leftNums = extractPairsStrict(left, 35);
     const rightNums = extractPairsStrict(right, 12);
@@ -54,7 +58,7 @@ function normalizeIptFormat(input) {
 
     const formatted =
       rightNums.length > 0
-        ? `${leftNums.join(" ")} ${isDoubleHash ? "##" : "#"} ${rightNums.join(
+        ? `${leftNums.join(" ")} ${isDoubleHash ? ",," : ","} ${rightNums.join(
             " "
           )}`
         : `${leftNums.join(" ")}`;
@@ -70,7 +74,7 @@ function sortByNumberCountBeforeHash(input) {
   const linesWithCount = lines.map((line) => {
     let numbersPart = "",
       commentPart = "";
-    const hashIndex = line.indexOf("#");
+    const hashIndex = line.indexOf(",");
     if (hashIndex !== -1) {
       numbersPart = line.slice(0, hashIndex).trim();
       commentPart = line.slice(hashIndex).trim();
@@ -94,9 +98,9 @@ function parseData() {
 
   lines.forEach((line, rowIndex) => {
     if (line) {
-      const hashCount = (line.match(/#/g) || []).length;
+      const hashCount = (line.match(/,/g) || []).length;
       const isDoubleHash = hashCount === 2;
-      const parts = line.split("#").map((p) => p.trim());
+      const parts = line.split(",").map((p) => p.trim());
       while (parts.length < 2) parts.push("");
 
       const numbers1To35 = parts[0].split(" ").filter(Boolean);
@@ -162,7 +166,7 @@ function renderTable(sortedData = parsedData) {
   }
 
   const hashTh = document.createElement("th");
-  hashTh.textContent = "#";
+  hashTh.textContent = ",";
   hashTh.dataset.type = "hash";
   headerRow.appendChild(hashTh);
 
@@ -208,8 +212,8 @@ function renderTable(sortedData = parsedData) {
 
     const hashTd = document.createElement("td");
     hashTd.textContent = item.isDoubleHash
-      ? `##${item.countBeforeHash}`
-      : `#${item.countBeforeHash}`;
+      ? `,,${item.countBeforeHash}`
+      : `,${item.countBeforeHash}`;
     if (item.isDoubleHash) hashTd.classList.add("purple-highlight");
     row.appendChild(hashTd);
 
@@ -272,17 +276,44 @@ function loadIssueScript(issue) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("prev").onclick = () => {
+  // 获取按钮元素
+  const prevBtn = document.getElementById("prev");
+  const nextBtn = document.getElementById("next");
+  const curBtn = document.getElementById("cur");
+
+  curBtn.onclick = () => {
+    current = defaultCur;
+    loadIssueScript(current);
+  };
+
+  // 绑定按钮点击事件
+  prevBtn.onclick = () => {
     if (current > 1) {
       current--;
       loadIssueScript(current);
     }
   };
-  document.getElementById("next").onclick = () => {
+
+  nextBtn.onclick = () => {
     current++;
     loadIssueScript(current);
   };
 
+  // 绑定键盘事件
+  window.addEventListener("keydown", (event) => {
+    // 上箭头键
+    if (event.key === "ArrowUp" || event.keyCode === 38) {
+      event.preventDefault(); // 阻止页面滚动
+      prevBtn.click(); // 触发上一页按钮点击事件
+    }
+    // 下箭头键
+    else if (event.key === "ArrowDown" || event.keyCode === 40) {
+      event.preventDefault(); // 阻止页面滚动
+      nextBtn.click(); // 触发下一页按钮点击事件
+    }
+  });
+
+  // 加载初始内容
   loadIssueScript(current);
 });
 
@@ -297,6 +328,6 @@ async function copyToClipboard(text) {
   }
 }
 
-document.getElementById("copy").addEventListener("click", async () => {
+document.getElementById("copy")?.addEventListener("click", async () => {
   await copyToClipboard(ipt);
 });

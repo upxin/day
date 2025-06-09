@@ -270,17 +270,44 @@ function loadIssueScript(issue) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("prev").onclick = () => {
+  // 获取按钮元素
+  const prevBtn = document.getElementById("prev");
+  const nextBtn = document.getElementById("next");
+  const curBtn = document.getElementById("cur");
+
+  curBtn.onclick = () => {
+    current = defaultCur;
+    loadIssueScript(current);
+  };
+
+  // 绑定按钮点击事件
+  prevBtn.onclick = () => {
     if (current > 1) {
       current--;
       loadIssueScript(current);
     }
   };
-  document.getElementById("next").onclick = () => {
+
+  nextBtn.onclick = () => {
     current++;
     loadIssueScript(current);
   };
 
+  // 绑定键盘事件
+  window.addEventListener("keydown", (event) => {
+    // 上箭头键
+    if (event.key === "ArrowUp" || event.keyCode === 38) {
+      event.preventDefault(); // 阻止页面滚动
+      prevBtn.click(); // 触发上一页按钮点击事件
+    }
+    // 下箭头键
+    else if (event.key === "ArrowDown" || event.keyCode === 40) {
+      event.preventDefault(); // 阻止页面滚动
+      nextBtn.click(); // 触发下一页按钮点击事件
+    }
+  });
+
+  // 加载初始内容
   loadIssueScript(current);
 });
 
