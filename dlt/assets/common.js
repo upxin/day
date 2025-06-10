@@ -1,6 +1,14 @@
 const basePath = "./hisData/";
 ipt = window.ipt || "";
+function numToChinese(num) {
+  function generateIndexArray(length = 100) {
+    return Array.from({ length }, (_, i) => `I${i + 1}`);
+  }
 
+  // 使用示例
+  const chnNum = generateIndexArray(200);
+  return chnNum[num - 1] || "";
+}
 function showError(lineNumber, message) {
   // 创建对话框元素
   const dialog = document.createElement("dialog");
@@ -118,32 +126,6 @@ function parseData() {
       });
     }
   });
-}
-
-function numToChinese(num) {
-  const chnNum = [
-    "一",
-    "二",
-    "三",
-    "四",
-    "五",
-    "六",
-    "七",
-    "八",
-    "九",
-    "十",
-    "十一",
-    "十二",
-    "十三",
-    "十四",
-    "十五",
-    "十六",
-    "十七",
-    "十八",
-    "十九",
-    "二十",
-  ];
-  return chnNum[num - 1] || "";
 }
 
 function renderTable(sortedData = parsedData) {
@@ -288,6 +270,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // 绑定按钮点击事件
   prevBtn.onclick = () => {
+    if (current === 58) return;
+
     if (current > 1) {
       current--;
       loadIssueScript(current);
@@ -295,6 +279,7 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   nextBtn.onclick = () => {
+    if (current === window.defaultCur) return;
     current++;
     loadIssueScript(current);
   };

@@ -36,7 +36,10 @@ function normalizeIptFormat(input) {
   for (let i = 0; i < lines.length; i++) {
     const rawLine = lines[i].trim();
     if (!rawLine) continue;
-
+    if (!rawLine.includes(",")) {
+      showError(i, rawLine + "没有逗号");
+      return;
+    }
     let isDoubleHash = rawLine.includes(",,");
     let [left = "", right = ""] = isDoubleHash
       ? rawLine.split(",,").map((s) => s.trim())
@@ -115,28 +118,12 @@ function parseData() {
 }
 
 function numToChinese(num) {
-  const chnNum = [
-    "一",
-    "二",
-    "三",
-    "四",
-    "五",
-    "六",
-    "七",
-    "八",
-    "九",
-    "十",
-    "十一",
-    "十二",
-    "十三",
-    "十四",
-    "十五",
-    "十六",
-    "十七",
-    "十八",
-    "十九",
-    "二十",
-  ];
+  function generateIndexArray(length = 100) {
+    return Array.from({ length }, (_, i) => `I${i + 1}`);
+  }
+
+  // 使用示例
+  const chnNum = generateIndexArray(200);
   return chnNum[num - 1] || "";
 }
 
@@ -174,7 +161,7 @@ function renderTable(sortedData = parsedData) {
 
   headerRow.querySelectorAll("th").forEach((th, index) => {
     th.addEventListener("click", () => {
-      if ((index >= 1 && index <= 33) || index === 36) {
+      if ((index >= 1 && index <= 33) || index === 34) {
         const type = th.dataset.type;
         const value = th.dataset.value;
         sortTable(index, type, value);
@@ -193,6 +180,7 @@ function renderTable(sortedData = parsedData) {
     const row = document.createElement("tr");
 
     const indexTd = document.createElement("td");
+
     indexTd.textContent = numToChinese(index + 1);
     row.appendChild(indexTd);
 
@@ -282,6 +270,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // 绑定按钮点击事件
   prevBtn.onclick = () => {
+    if (current === 60) return;
+
     if (current > 1) {
       current--;
       loadIssueScript(current);
@@ -289,6 +279,8 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   nextBtn.onclick = () => {
+    if (current === window.defaultCur) return;
+
     current++;
     loadIssueScript(current);
   };
