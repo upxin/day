@@ -29,8 +29,7 @@ th {
 }
 
 .highlight {
-  color: #fff;
-  background-color: rgba(230, 95, 95, 0.2);
+  background-color: rgba(228, 228, 241, 0.4);
 }
 
 tbody tr:hover {
@@ -39,7 +38,7 @@ tbody tr:hover {
 }
 
 .red {
-  background-color: blue;
+  background-color: rgb(228, 228, 241);
   color: #fff;
 }
 
