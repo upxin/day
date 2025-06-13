@@ -317,3 +317,15 @@ async function copyToClipboard(text) {
 document.getElementById("copy").addEventListener("click", async () => {
   await copyToClipboard(ipt);
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const tableBody = document.getElementById("table-body");
+
+  if (tableBody) {
+    tableBody.addEventListener("click", (event) => {
+      const tr = event.target.closest("tr");
+      if (tr && tr.parentElement === tableBody) {
+        tr.classList.toggle("row-highlight");
+      }
+    });
+  }
+});

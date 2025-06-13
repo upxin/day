@@ -24,6 +24,11 @@ td {
   cursor: pointer;
 }
 
+tr.row-highlight td {
+  background-color: red;
+  color: #fff;
+}
+
 th {
   background-color: aliceblue;
 }
@@ -33,8 +38,7 @@ th {
 }
 
 tbody tr:hover {
-  background-color: green;
-  color: white;
+  background-color: rgba(228, 228, 241, 0.4);
 }
 
 .red {
