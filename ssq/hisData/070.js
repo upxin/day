@@ -1,4 +1,4 @@
-window.g1 = [];
+window.g1 = [2, 3, 15, 21, 22, 33];
 window.g2 = [];
 window.ipt = `
 
