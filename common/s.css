@@ -64,7 +64,7 @@ thead tr:hover {
 
 #nav-buttons {
   position: fixed;
-  right: 20px;
+  right: 40px;
   bottom: 10px;
   z-index: 999;
   display: flex;
