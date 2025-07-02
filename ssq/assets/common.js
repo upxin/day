@@ -241,7 +241,6 @@ function loadIssueScript(issue) {
     document.title = "ssq" + issue.toString().padStart(3, "0");
 
     if (typeof window.ipt !== "string" || !window.ipt.trim()) {
-      alert("ipt 数据加载失败或为空！");
       return;
     }
 

@@ -38,7 +38,8 @@ th {
 }
 
 tbody tr:hover {
-  background-color: rgba(228, 228, 241, 0.4);
+  background-color: red;
+  color: blue;
 }
 
 .red {
@@ -80,7 +81,6 @@ thead tr:hover {
   line-height: 30px;
   cursor: pointer;
 }
-
 
 .resizable {
   position: absolute;
