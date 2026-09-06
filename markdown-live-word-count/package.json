@@ -1,0 +1,17 @@
+{
+  "name": "markdown-live-word-count",
+  "displayName": "Markdown 实时字数",
+  "description": "在状态栏实时显示当前 Markdown 文件的字数。",
+  "version": "0.0.1",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./extension.js"
+}
